@@ -97,6 +97,26 @@ Schedule with cron (e.g. `0 2 * * * cd /home/ops/plasticloop && sh infra/scripts
 (rclone/object storage), keep at least 14 days, and test a restore monthly on a spare machine. The round trip was tested
 locally (see the test report).
 
+## Alternative: Render free tier (public demo)
+
+Used for the hosted demo. Two Docker web services in the same region as the Postgres instance (internal URLs only work
+within a region):
+
+| Service | Docker context / file | Settings |
+|---|---|---|
+| `plasticloop-api` | `./apps/api` / `apps/api/Dockerfile` | Docker command: `sh -c "python -m app.scripts.ensure_database && alembic upgrade head && (python -m app.scripts.seed_demo \|\| true) && exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips=* --timeout-graceful-shutdown 5"` |
+| `plasticloop-web` | `.` / `apps/web/Dockerfile` | `API_INTERNAL_URL=https://<api>.onrender.com` (passed to the build; Next.js bakes the proxy target in) |
+
+API environment: `PORT=8000`, `ENVIRONMENT=development` + `DEMO_MODE=true` (demo mode is refused in production),
+`COOKIE_SECURE=true`, `CORS_ORIGINS=https://<web>.onrender.com`, random `JWT_SECRET` / `MQTT_SERVICE_PASSWORD` /
+`DEMO_DEVICE_SECRET`, `UPLOAD_DIR=/data/uploads`, `MQTT_PASSWD_FILE=/mqtt-auth/passwd`, and `DATABASE_URL` = the
+instance's **Internal Database URL** with the database name changed to `plasticloop` (`postgresql://` is accepted;
+`ensure_database` creates the database on first start, then the seed runs once — it skips when users exist).
+
+Limits of this setup: services sleep after ~15 min idle (first request ≈ 1 min), uploads are lost on restart, no
+background worker (offline/overdue/ageing checks don't run) and no MQTT broker (Render has no public TCP) — devices
+use HTTPS ingestion, and device commands return `503 MQTT_UNAVAILABLE`. Free Postgres expires after 30 days.
+
 ## 6. Operations
 
 * Logs: `docker compose logs -f api worker` (JSON lines with request IDs).
