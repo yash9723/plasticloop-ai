@@ -1,5 +1,11 @@
 # PlasticLoop AI
 
+[![CI](https://github.com/yash9723/plasticloop-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/yash9723/plasticloop-ai/actions/workflows/ci.yml)
+
+**Live demo:** https://plasticloop-web.onrender.com — synthetic data, demo accounts below. Free hosting: the first visit
+after ~15 idle minutes takes about a minute to wake up, and there is no MQTT broker or background worker there
+(see [Deployment](docs/DEPLOYMENT.md#alternative-render-free-tier-public-demo)).
+
 Rural plastic-waste collection, traceability and resource recovery for Gram Panchayats and MRF / PWMU operators
 (SIH 2026 problem statement **SIH26259**: management of multilayer plastic (MLP) at PWMU / MRF level).
 
@@ -87,7 +93,7 @@ docs                architecture, API, ESP32, traceability, tests, demo, deploym
 
 * [Architecture](docs/ARCHITECTURE.md) · [API reference](docs/API_REFERENCE.md) · [ESP32 integration](docs/ESP32_INTEGRATION.md)
 * [Requirements traceability](docs/REQUIREMENTS_TRACEABILITY.md) · [Test report](docs/TEST_REPORT.md) · [Demo script](docs/DEMO_SCRIPT.md)
-* [Deployment (VPS, TLS, backups)](docs/DEPLOYMENT.md) · [Implementation status](docs/IMPLEMENTATION_STATUS.md)
+* [Deployment (VPS, TLS, backups, Render)](docs/DEPLOYMENT.md) · [Implementation status](docs/IMPLEMENTATION_STATUS.md)
 
 ## Licence and data
 
