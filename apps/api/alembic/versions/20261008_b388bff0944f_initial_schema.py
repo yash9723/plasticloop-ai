@@ -7,9 +7,9 @@ Create Date: 2026-10-08 06:37:38.464170
 from collections.abc import Sequence
 
 import sqlalchemy as sa
-from alembic import op
 from sqlalchemy.dialects import postgresql
 
+from alembic import op
 from app.db.base import Geography
 
 revision: str = 'b388bff0944f'

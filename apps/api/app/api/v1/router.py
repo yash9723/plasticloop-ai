@@ -12,10 +12,10 @@ from app.api.v1 import (
     events,
     facilities,
     finance,
-    inventory,
-    marketplace,
     health,
     households,
+    inventory,
+    marketplace,
     media,
     notifications,
     organizations,
@@ -28,8 +28,8 @@ from app.api.v1 import (
     transfers,
     users,
     vehicles,
-    vision,
     villages,
+    vision,
 )
 
 api_router = APIRouter()

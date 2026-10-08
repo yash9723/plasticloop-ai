@@ -9,8 +9,8 @@ its own topic, so the device id in the topic is the authenticated identity.
 import json
 import signal
 import threading
-from pathlib import Path
 from datetime import timedelta
+from pathlib import Path
 
 import paho.mqtt.client as mqtt
 from pydantic import ValidationError
@@ -25,7 +25,14 @@ from app.models.enums import BatchStatus, PickupStatus, Severity
 from app.security.tokens import utcnow
 from app.services import system_settings
 from app.services.notifications import facility_operators, notify, village_admins
-from app.services.telemetry import StatusIn, TelemetryIn, TelemetryRejected, handle_status, ingest, refresh_connection_states
+from app.services.telemetry import (
+    StatusIn,
+    TelemetryIn,
+    TelemetryRejected,
+    handle_status,
+    ingest,
+    refresh_connection_states,
+)
 
 log = get_logger("app.worker")
 TOPIC_PREFIX = "plasticloop/devices/"

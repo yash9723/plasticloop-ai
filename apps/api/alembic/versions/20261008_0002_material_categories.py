@@ -11,8 +11,9 @@ import uuid
 from collections.abc import Sequence
 
 import sqlalchemy as sa
-from alembic import op
 from sqlalchemy.dialects import postgresql
+
+from alembic import op
 
 revision: str = "0002_material_categories"
 down_revision: str | None = "b388bff0944f"
@@ -65,4 +66,5 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.execute("DELETE FROM material_categories WHERE code IN (%s)" % ", ".join(f"'{c[0]}'" for c in CATEGORIES))
+    codes = ", ".join(f"'{c[0]}'" for c in CATEGORIES)
+    op.execute(f"DELETE FROM material_categories WHERE code IN ({codes})")

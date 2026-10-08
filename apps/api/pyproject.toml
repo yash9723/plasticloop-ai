@@ -51,4 +51,5 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
-ignore = ["E501", "B008"]
+# UP046: PEP 695 generics on pydantic models would rename OpenAPI schemas (and the generated TS types).
+ignore = ["E501", "B008", "UP046"]

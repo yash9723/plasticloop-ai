@@ -4,13 +4,13 @@ import tempfile
 from pathlib import Path
 
 import pytest
-from alembic import command
 from alembic.config import Config
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session
 
+from alembic import command
 from app.core.config import API_DIR, settings
 from app.core.ratelimit import limiter
 from app.db.session import get_db

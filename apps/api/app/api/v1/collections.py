@@ -1,7 +1,7 @@
 import uuid
 from datetime import date, datetime
 
-from fastapi import APIRouter, Depends, Header, Query
+from fastapi import APIRouter, Depends, Header
 from fastapi.responses import JSONResponse
 from sqlalchemy import or_, select
 
@@ -17,7 +17,15 @@ from app.models import (
     Village,
     WasteStream,
 )
-from app.models.enums import AssignmentStatus, DataOrigin, PickupStatus, PointStatus, ReviewStatus, RoleKey, SyncReceiptStatus
+from app.models.enums import (
+    AssignmentStatus,
+    DataOrigin,
+    PickupStatus,
+    PointStatus,
+    ReviewStatus,
+    RoleKey,
+    SyncReceiptStatus,
+)
 from app.schemas.collection import (
     AssignmentIn,
     AssignmentOut,
