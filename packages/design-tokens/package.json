@@ -1,0 +1,9 @@
+{
+  "name": "@plasticloop/design-tokens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PlasticLoop AI colour, radius and chart tokens (light + dark) as CSS variables",
+  "exports": {
+    "./tokens.css": "./tokens.css"
+  }
+}

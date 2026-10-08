@@ -1,0 +1,16 @@
+{
+  "name": "@plasticloop/shared-schemas",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TypeScript types generated from the FastAPI OpenAPI document (pnpm gen:api)",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "gen": "pnpm --dir ../../apps/web exec openapi-typescript ../api/openapi.json -o ../../packages/shared-schemas/src/api.d.ts"
+  }
+}

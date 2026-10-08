@@ -1,0 +1,26 @@
+{
+  "name": "plasticloop-ai",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20.9"
+  },
+  "scripts": {
+    "dev:web": "pnpm --filter @plasticloop/web dev",
+    "build:web": "pnpm --filter @plasticloop/web build",
+    "lint": "pnpm --filter @plasticloop/web lint",
+    "typecheck": "pnpm --filter @plasticloop/web typecheck",
+    "test:web": "pnpm --filter @plasticloop/web test",
+    "e2e": "pnpm --filter @plasticloop/web e2e",
+    "i18n:check": "pnpm --filter @plasticloop/web i18n:check",
+    "gen:api": "pnpm --filter @plasticloop/shared-schemas gen",
+    "stack:up": "docker compose up --build -d",
+    "stack:down": "docker compose down",
+    "stack:logs": "docker compose logs -f --tail=100",
+    "db:migrate": "docker compose exec api alembic upgrade head",
+    "demo:reset": "docker compose exec api python -m app.scripts.seed_demo --reset",
+    "test:api": "docker compose exec api pytest -q",
+    "simulator": "docker compose exec api python /simulators/iot-device/simulator.py --mqtt-host mosquitto",
+    "e2e:docker": "sh infra/scripts/e2e.sh"
+  }
+}

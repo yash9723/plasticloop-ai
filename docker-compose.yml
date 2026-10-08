@@ -1,0 +1,133 @@
+# PlasticLoop AI — local / single-host stack.
+#   docker compose up --build -d
+#   docker compose exec api python -m app.scripts.seed_demo --reset
+# Defaults are DEVELOPMENT-ONLY; set real values in .env for any shared deployment.
+name: plasticloop
+
+x-api-env: &api-env
+  ENVIRONMENT: ${ENVIRONMENT:-development}
+  DEMO_MODE: ${DEMO_MODE:-true}
+  DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-plasticloop}:${POSTGRES_PASSWORD:-change-me-dev-only}@db:5432/${POSTGRES_DB:-plasticloop}
+  TEST_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-plasticloop}:${POSTGRES_PASSWORD:-change-me-dev-only}@db:5432/plasticloop_test
+  JWT_SECRET: ${JWT_SECRET:-dev-only-change-me-to-a-long-random-string-of-64-chars}
+  ACCESS_TOKEN_MINUTES: ${ACCESS_TOKEN_MINUTES:-15}
+  REFRESH_TOKEN_DAYS: ${REFRESH_TOKEN_DAYS:-14}
+  COOKIE_SECURE: ${COOKIE_SECURE:-false}
+  CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+  UPLOAD_DIR: /data/uploads
+  MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-5}
+  MQTT_HOST: mosquitto
+  MQTT_PORT: 1883
+  MQTT_SERVICE_USER: ${MQTT_SERVICE_USER:-plasticloop-service}
+  MQTT_SERVICE_PASSWORD: ${MQTT_SERVICE_PASSWORD:-dev-only-mqtt-service-password}
+  MQTT_PASSWD_FILE: /mqtt-auth/passwd
+  DEMO_DEVICE_SECRET: ${DEMO_DEVICE_SECRET:-dev-only-demo-device-secret}
+  OSRM_URL: ${OSRM_URL:-}
+  ROUTING_AVG_SPEED_KMPH: ${ROUTING_AVG_SPEED_KMPH:-25}
+  VISION_MODE: ${VISION_MODE:-auto}
+  VISION_MODEL_PATH: /app/models/packaging-cls.pt
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-plasticloop}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me-dev-only}
+      POSTGRES_DB: ${POSTGRES_DB:-plasticloop}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${DB_HOST_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0.20
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "/plasticloop/entrypoint.sh"]
+    volumes:
+      - ./infra/mosquitto:/plasticloop:ro
+      - mqtt-auth:/mosquitto/auth
+      - mqtt-data:/mosquitto/data
+    ports:
+      # Bound on all interfaces so a physical ESP32 on the LAN can connect. Firewall it; use TLS (8883) in production.
+      - "${MQTT_HOST_PORT:-1883}:1883"
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 1883"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: ./apps/api
+    image: plasticloop/api:local
+    restart: unless-stopped
+    environment: *api-env
+    volumes:
+      - uploads:/data/uploads
+      - mqtt-auth:/mqtt-auth
+      - ./simulators:/simulators:ro
+    ports:
+      - "${API_HOST_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  worker:
+    image: plasticloop/api:local
+    restart: unless-stopped
+    command: ["python", "-m", "app.worker"]
+    environment: *api-env
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os,sys,time; sys.exit(0 if time.time() - os.path.getmtime('/tmp/worker-heartbeat') < 180 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
+    volumes:
+      - uploads:/data/uploads
+      - mqtt-auth:/mqtt-auth
+    depends_on:
+      api:
+        condition: service_healthy
+      mosquitto:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        API_INTERNAL_URL: http://api:8000
+    image: plasticloop/web:local
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+    ports:
+      - "${WEB_HOST_PORT:-3000}:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/login').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  pgdata:
+  uploads:
+  mqtt-auth:
+  mqtt-data:

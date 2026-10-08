@@ -1,0 +1,115 @@
+/*
+ * PlasticLoop AI design tokens.
+ * Brand: forest #166534 · emerald #10B981 · navy #0F172A · teal #0D9488 · warning #F59E0B · danger #EF4444.
+ * Text-on-colour pairs are chosen for WCAG AA contrast; bright brand hues are used for fills/accents, darker
+ * shades for text.
+ */
+:root {
+  --radius: 0.75rem;
+
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  --primary: #166534;
+  --primary-foreground: #ffffff;
+  --secondary: #ecfdf5;
+  --secondary-foreground: #065f46;
+  --accent: #f0fdfa;
+  --accent-foreground: #0f766e;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+
+  --brand-emerald: #10b981;
+  --brand-teal: #0d9488;
+  --brand-navy: #0f172a;
+
+  --success: #059669;
+  --success-soft: #d1fae5;
+  --warning: #f59e0b;
+  --warning-soft: #fef3c7;
+  --warning-foreground: #92400e;
+  --danger: #ef4444;
+  --danger-soft: #fee2e2;
+  --danger-foreground: #b91c1c;
+  --info-soft: #e0f2fe;
+  --info-foreground: #075985;
+
+  --border: #e2e8f0;
+  --input: #cbd5e1;
+  --ring: #10b981;
+
+  --sidebar: #0f172a;
+  --sidebar-foreground: #cbd5e1;
+  --sidebar-muted: #94a3b8; /* ≥ 7:1 on the dark sidebar (WCAG AA) */
+  --sidebar-active: #166534;
+  --sidebar-active-foreground: #ffffff;
+  --sidebar-hover: #1e293b;
+  --sidebar-border: #1e293b;
+
+  --chart-1: #166534;
+  --chart-2: #10b981;
+  --chart-3: #0d9488;
+  --chart-4: #f59e0b;
+  --chart-5: #64748b;
+  --chart-6: #0ea5e9;
+  --chart-7: #a3a3a3;
+
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 1px 3px rgb(15 23 42 / 0.06);
+  --shadow-elevated: 0 8px 24px rgb(15 23 42 / 0.10);
+}
+
+.dark {
+  --background: #0b1220;
+  --foreground: #e2e8f0;
+  --card: #111a2e;
+  --card-foreground: #e2e8f0;
+  --popover: #111a2e;
+  --popover-foreground: #e2e8f0;
+
+  --primary: #34d399;
+  --primary-foreground: #052e16;
+  --secondary: #0f2a22;
+  --secondary-foreground: #6ee7b7;
+  --accent: #0f2a2a;
+  --accent-foreground: #5eead4;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+
+  --success: #34d399;
+  --success-soft: #064e3b;
+  --warning: #fbbf24;
+  --warning-soft: #422006;
+  --warning-foreground: #fcd34d;
+  --danger: #f87171;
+  --danger-soft: #450a0a;
+  --danger-foreground: #fca5a5;
+  --info-soft: #082f49;
+  --info-foreground: #7dd3fc;
+
+  --border: #1e293b;
+  --input: #334155;
+  --ring: #34d399;
+
+  --sidebar: #070d18;
+  --sidebar-foreground: #cbd5e1;
+  --sidebar-muted: #94a3b8; /* ≥ 7:1 on the dark sidebar (WCAG AA) */
+  --sidebar-active: #14532d;
+  --sidebar-active-foreground: #ecfdf5;
+  --sidebar-hover: #111a2e;
+  --sidebar-border: #111a2e;
+
+  --chart-1: #34d399;
+  --chart-2: #10b981;
+  --chart-3: #2dd4bf;
+  --chart-4: #fbbf24;
+  --chart-5: #94a3b8;
+  --chart-6: #38bdf8;
+  --chart-7: #737373;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+  --shadow-elevated: 0 8px 24px rgb(0 0 0 / 0.45);
+}

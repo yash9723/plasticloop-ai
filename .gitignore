@@ -1,0 +1,47 @@
+# deps
+node_modules/
+.pnpm-store/
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+
+# builds
+.next/
+out/
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+.pytest_cache/
+.ruff_cache/
+*.tsbuildinfo
+next-env.d.ts
+
+# env / secrets
+.env
+.env.*
+!.env.example
+infra/mosquitto/auth/
+*.pem
+*.key
+
+# runtime data
+data/uploads/
+backups/
+apps/api/uploads/
+apps/web/public/sw.js
+
+# ML artifacts (download/train separately)
+apps/api/models/*.pt
+apps/api/models/*.onnx
+data/vision/raw/
+data/vision/splits/
+reports/vision/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

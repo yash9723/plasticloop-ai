@@ -1,0 +1,12 @@
+# PlasticLoop AI — Mosquitto ACL.
+# Each device authenticates with username == its device_id (e.g. DEV-ESP32-001); %u expands to it,
+# so a device can only publish its own telemetry/status and only read its own command topic.
+pattern write plasticloop/devices/%u/telemetry
+pattern write plasticloop/devices/%u/status
+pattern read plasticloop/devices/%u/commands
+
+# Backend service account (worker). Name must match MQTT_SERVICE_USER.
+user plasticloop-service
+topic read plasticloop/devices/+/telemetry
+topic read plasticloop/devices/+/status
+topic write plasticloop/devices/+/commands

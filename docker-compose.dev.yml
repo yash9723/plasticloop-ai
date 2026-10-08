@@ -1,0 +1,48 @@
+# Development override: hot-reload API/worker from the source tree and run Next.js dev in a container
+# (node_modules live in Docker volumes, so no host Node toolchain is required).
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d db mosquitto api worker web-dev
+#   open http://localhost:3000
+# Alternatively run the web app on the host: pnpm install && pnpm dev:web
+services:
+  web-dev:
+    image: node:22-bookworm-slim
+    working_dir: /repo
+    command: ["sh", "-c", "corepack enable && pnpm install && pnpm --filter @plasticloop/web dev --hostname 0.0.0.0"]
+    environment:
+      API_INTERNAL_URL: http://api:8000
+      NEXT_TELEMETRY_DISABLED: "1"
+      WATCHPACK_POLLING: "true"
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+      npm_config_store_dir: /pnpm-store
+    volumes:
+      - ./:/repo
+      - web-node-modules:/repo/node_modules
+      - web-app-node-modules:/repo/apps/web/node_modules
+      - web-next:/repo/apps/web/.next
+      - pnpm-store:/pnpm-store
+    ports:
+      - "${WEB_HOST_PORT:-3000}:3000"
+    depends_on:
+      - api
+
+  api:
+    command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --timeout-graceful-shutdown 3"]
+    volumes:
+      - ./apps/api:/app
+      - uploads:/data/uploads
+      - mqtt-auth:/mqtt-auth
+
+  worker:
+    volumes:
+      - ./apps/api:/app
+      - uploads:/data/uploads
+      - mqtt-auth:/mqtt-auth
+
+  web:
+    profiles: ["web-container"]
+
+volumes:
+  web-node-modules:
+  web-app-node-modules:
+  web-next:
+  pnpm-store:

@@ -1,0 +1,14 @@
+**/node_modules
+**/.next
+**/.venv
+**/__pycache__
+**/test-results
+**/playwright-report
+apps/api
+data
+backups
+firmware
+simulators
+docs
+.git
+.env
