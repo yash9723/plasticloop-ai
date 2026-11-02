@@ -99,23 +99,25 @@ locally (see the test report).
 
 ## Alternative: Render free tier (public demo)
 
-Used for the hosted demo. Two Docker web services in the same region as the Postgres instance (internal URLs only work
-within a region):
+Used for the hosted demo. Two Docker web services plus a Postgres with PostGIS (Render's free Postgres expires after
+30 days; Neon's free tier does not and supports PostGIS — the demo uses a Neon project in the same region, Oregon):
 
 | Service | Docker context / file | Settings |
 |---|---|---|
-| `plasticloop-api` | `./apps/api` / `apps/api/Dockerfile` | Docker command: `sh -c "python -m app.scripts.ensure_database && alembic upgrade head && (python -m app.scripts.seed_demo \|\| true) && exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips=* --timeout-graceful-shutdown 5"` |
-| `plasticloop-web` | `.` / `apps/web/Dockerfile` | `API_INTERNAL_URL=https://<api>.onrender.com` (passed to the build; Next.js bakes the proxy target in) |
+| `plasticloop-backend` | `./apps/api` / `apps/api/Dockerfile` | **Leave the Docker command empty** — the image's `CMD` runs `start.sh` (migrate, optional seed, serve). Render passes quote marks in a custom command through literally, which breaks `sh -c "..."` with `exit 127`. |
+| `plasticloop-web` | `.` / `apps/web/Dockerfile` | `API_INTERNAL_URL=https://<backend>.onrender.com` (passed to the build; Next.js bakes the proxy target in, so changing it needs a rebuild) |
 
-API environment: `PORT=8000`, `ENVIRONMENT=development` + `DEMO_MODE=true` (demo mode is refused in production),
+Backend environment: `PORT=8000`, `ENVIRONMENT=development` + `DEMO_MODE=true` (demo mode is refused in production),
+`SEED_DEMO_ON_START=true` (loads the synthetic data once, in the background; a no-op when users already exist),
 `COOKIE_SECURE=true`, `CORS_ORIGINS=https://<web>.onrender.com`, random `JWT_SECRET` / `MQTT_SERVICE_PASSWORD` /
-`DEMO_DEVICE_SECRET`, `UPLOAD_DIR=/data/uploads`, `MQTT_PASSWD_FILE=/mqtt-auth/passwd`, and `DATABASE_URL` = the
-instance's **Internal Database URL** with the database name changed to `plasticloop` (`postgresql://` is accepted;
-`ensure_database` creates the database on first start, then the seed runs once — it skips when users exist).
+`DEMO_DEVICE_SECRET`, `UPLOAD_DIR=/data/uploads`, `MQTT_PASSWD_FILE=/mqtt-auth/passwd`, and `DATABASE_URL`
+(`postgresql://` is accepted). With Neon use the **direct** host, not the `-pooler` one: live updates use
+`LISTEN/NOTIFY`, which pooled connections break. Seed from inside Render rather than from a laptop — the seed issues
+thousands of sequential statements and a transatlantic round trip per statement makes it take far too long.
 
 Limits of this setup: services sleep after ~15 min idle (first request ≈ 1 min), uploads are lost on restart, no
 background worker (offline/overdue/ageing checks don't run) and no MQTT broker (Render has no public TCP) — devices
-use HTTPS ingestion, and device commands return `503 MQTT_UNAVAILABLE`. Free Postgres expires after 30 days.
+use HTTPS ingestion, and device commands return `503 MQTT_UNAVAILABLE`.
 
 ## 6. Operations
 
