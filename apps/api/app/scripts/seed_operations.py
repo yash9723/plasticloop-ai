@@ -229,8 +229,10 @@ def intakes_and_inventory(seeder, days: int = 46) -> dict:
                                  notes="Hand-sorted on picking table (synthetic)")
             stats["sorted"] += 1
     db.flush()
-    flexible = db.scalar(select(MaterialBatch).join(MaterialCategory).where(MaterialCategory.code == "flexible_plastic",
-                                                                            MaterialBatch.status == BatchStatus.ACTIVE).limit(1))
+    # Oldest active batch that can absorb the 0.8 kg loss (small batches from the smaller villages cannot); ordered so the seed is deterministic.
+    flexible = db.scalar(select(MaterialBatch).join(MaterialCategory).where(
+        MaterialCategory.code == "flexible_plastic", MaterialBatch.status == BatchStatus.ACTIVE,
+        MaterialBatch.current_weight_kg > Decimal("1")).order_by(MaterialBatch.created_at, MaterialBatch.code).limit(1))
     if flexible:
         inventory.adjust_batch(db, flexible.id, MovementType.LOSS, Decimal("0.8"), "Moisture loss after sun-drying (synthetic)",
                                operator.id, at=now - timedelta(days=1))
