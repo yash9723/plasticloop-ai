@@ -45,8 +45,9 @@ mode only; refused when `ENVIRONMENT=production`).
 | Role | Email |
 |---|---|
 | Super admin | `superadmin@plasticloop.example` |
-| Panchayat admin | `gp.vanapuram@plasticloop.example`, `gp.pachchapalli@…`, `gp.neelagiri@…` |
-| Collector | `collector1@plasticloop.example` … `collector6@…` |
+| Panchayat admin (Telangana-style samples) | `gp.vanapuram@plasticloop.example`, `gp.pachchapalli@…`, `gp.neelagiri@…` |
+| Panchayat admin (Bengaluru area) | `gp.devanahalli@plasticloop.example` (north), `gp.hoskote@…` (east), `gp.nelamangala@…` (west), `gp.anekal@…` (south) |
+| Collector | `collector1@plasticloop.example` … `collector6@…` (Telangana-style), `collector7@…` … `collector10@…` (Devanahalli, Hoskote, Nelamangala, Anekal) |
 | Driver | `driver.vanapuram@plasticloop.example`, `driver.pachchapalli@…` |
 | MRF / PWMU operator | `mrf.operator@plasticloop.example` |
 | Processing partner (fictional) | `processor@plasticloop.example` |

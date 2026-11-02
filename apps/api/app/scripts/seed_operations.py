@@ -105,9 +105,19 @@ def facilities_and_partners(seeder) -> None:
     pwmu = Facility(organization_id=op.id, name="Block PWMU, Neelagiri (synthetic)", code="PWMU-NGT", facility_type=FacilityType.PWMU,
                     lat=17.9900, lng=78.9300, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("800"),
                     storage_locations=["Shed 1", "Shed 2"], is_sample=True)
-    db.add_all([mrf, pwmu])
+    # Bengaluru-area cluster: one MRF for the north/east towns, block-level PWMUs for the west and south.
+    blr_mrf = Facility(organization_id=op.id, name="Cluster MRF, Devanahalli (synthetic)", code="MRF-DVH", facility_type=FacilityType.MRF,
+                       lat=13.2300, lng=77.7300, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("1200"),
+                       storage_locations=["Bay A", "Bay B", "Bale yard"], is_sample=True)
+    blr_pwmu_w = Facility(organization_id=op.id, name="Block PWMU, Nelamangala (synthetic)", code="PWMU-NLM", facility_type=FacilityType.PWMU,
+                          lat=13.1100, lng=77.4100, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("600"),
+                          storage_locations=["Shed 1", "Shed 2"], is_sample=True)
+    blr_pwmu_s = Facility(organization_id=op.id, name="Block PWMU, Anekal (synthetic)", code="PWMU-ANK", facility_type=FacilityType.PWMU,
+                          lat=12.7300, lng=77.7100, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("600"),
+                          storage_locations=["Shed 1", "Shed 2"], is_sample=True)
+    db.add_all([mrf, pwmu, blr_mrf, blr_pwmu_w, blr_pwmu_s])
     db.flush()
-    seeder.facilities = {"VNP": mrf, "PCP": mrf, "NGT": pwmu}
+    seeder.facilities = {"VNP": mrf, "PCP": mrf, "NGT": pwmu, "DVH": blr_mrf, "HSK": blr_mrf, "NLM": blr_pwmu_w, "ANK": blr_pwmu_s}
     for code, fac in seeder.facilities.items():
         seeder.villages[code].facility_id = fac.id
     seeder.user(f"mrf.operator@{DOMAIN}", "Kiran Kumar (MRF supervisor, demo)", RoleKey.MRF_OPERATOR, op)
@@ -136,6 +146,10 @@ VEHICLES = [
     ("Auto VNP-2 (demo)", "DEMO-VNP-02", "VNP", VehicleType.AUTO_RICKSHAW, 500, None),
     ("Tractor PCP-1 (demo)", "DEMO-PCP-01", "PCP", VehicleType.TRACTOR_TROLLEY, 1200, "driver.pachchapalli"),
     ("Mini truck NGT-1 (demo)", "DEMO-NGT-01", "NGT", VehicleType.MINI_TRUCK, 1500, None),
+    ("E-cart DVH-1 (demo)", "DEMO-DVH-01", "DVH", VehicleType.E_CART, 350, None),
+    ("Auto HSK-1 (demo)", "DEMO-HSK-01", "HSK", VehicleType.AUTO_RICKSHAW, 500, None),
+    ("Mini truck NLM-1 (demo)", "DEMO-NLM-01", "NLM", VehicleType.MINI_TRUCK, 1500, None),
+    ("E-cart ANK-1 (demo)", "DEMO-ANK-01", "ANK", VehicleType.E_CART, 350, None),
 ]
 
 
@@ -324,7 +338,7 @@ def recovery_market_finance(seeder) -> dict:
                              created_by=processor.id, data_origin=DataOrigin.DEMO_SEED))
 
     # 5) Expenses: recorded monthly costs plus one clearly marked estimate.
-    for code in ("VNP", "PCP", "NGT"):
+    for code in seeder.villages:
         org_id = seeder.villages[code].organization_id
         for back, cat, amount in ((40, ExpenseCategory.COLLECTION_LABOR, 1800000), (25, ExpenseCategory.FUEL_VEHICLE, 420000),
                                   (10, ExpenseCategory.COLLECTION_LABOR, 1800000), (6, ExpenseCategory.EQUIPMENT_MAINTENANCE, 150000)):

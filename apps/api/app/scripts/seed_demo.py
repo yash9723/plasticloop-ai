@@ -28,6 +28,7 @@ from app.models import (
     Notification,
     Organization,
     PickupRequest,
+    SystemSetting,
     User,
     UserMembership,
     Village,
@@ -61,6 +62,14 @@ DEMO_ACCOUNTS: list[tuple[str, str, str]] = [
     (f"collector4@{DOMAIN}", "collector", "Collector, Pachchapalli"),
     (f"collector5@{DOMAIN}", "collector", "Collector, Neelagiri Thanda"),
     (f"collector6@{DOMAIN}", "collector", "Collector, Neelagiri Thanda"),
+    (f"gp.devanahalli@{DOMAIN}", "gp_admin", "Panchayat admin, Devanahalli (Bengaluru North)"),
+    (f"gp.hoskote@{DOMAIN}", "gp_admin", "Panchayat admin, Hoskote (Bengaluru East)"),
+    (f"gp.nelamangala@{DOMAIN}", "gp_admin", "Panchayat admin, Nelamangala (Bengaluru West)"),
+    (f"gp.anekal@{DOMAIN}", "gp_admin", "Panchayat admin, Anekal (Bengaluru South)"),
+    (f"collector7@{DOMAIN}", "collector", "Collector, Devanahalli"),
+    (f"collector8@{DOMAIN}", "collector", "Collector, Hoskote"),
+    (f"collector9@{DOMAIN}", "collector", "Collector, Nelamangala"),
+    (f"collector10@{DOMAIN}", "collector", "Collector, Anekal"),
     (f"driver.vanapuram@{DOMAIN}", "driver", "Driver, Vanapuram"),
     (f"driver.pachchapalli@{DOMAIN}", "driver", "Driver, Pachchapalli"),
     (f"mrf.operator@{DOMAIN}", "mrf_operator", "MRF / PWMU operator"),
@@ -74,9 +83,25 @@ VILLAGES = [
     ("VNP", "Vanapuram (synthetic)", "Vanapuram Gram Panchayat (synthetic)", 17.9620, 78.8410, (1, 2), 20, 16),
     ("PCP", "Pachchapalli (synthetic)", "Pachchapalli Gram Panchayat (synthetic)", 17.9135, 78.9020, (3, 4), 18, 14),
     ("NGT", "Neelagiri Thanda (synthetic)", "Neelagiri Thanda Gram Panchayat (synthetic)", 17.9980, 78.9105, (5, 6), 12, 10),
+    # Bengaluru and surrounding peri-urban towns. Place names and coordinates are real geography (town centres, approximate);
+    # the panchayats, people, households and all figures are fictional.
+    ("DVH", "Devanahalli (synthetic)", "Devanahalli Gram Panchayat (synthetic)", 13.2487, 77.7134, (7,), 10, 8),
+    ("HSK", "Hoskote (synthetic)", "Hoskote Gram Panchayat (synthetic)", 13.0707, 77.7982, (8,), 10, 8),
+    ("NLM", "Nelamangala (synthetic)", "Nelamangala Gram Panchayat (synthetic)", 13.0997, 77.3935, (9,), 10, 8),
+    ("ANK", "Anekal (synthetic)", "Anekal Gram Panchayat (synthetic)", 12.7107, 77.6942, (10,), 10, 8),
 ]
-GP_ADMIN_KEY = {"VNP": "gp.vanapuram", "PCP": "gp.pachchapalli", "NGT": "gp.neelagiri"}
-COLLECTOR_NAMES = ["Ramesh Kumar", "Sujatha Bandari", "Venkatesh Rao", "Lakshmi Prasanna", "Mahesh Goud", "Anjali Naik"]
+GP_ADMIN_KEY = {"VNP": "gp.vanapuram", "PCP": "gp.pachchapalli", "NGT": "gp.neelagiri", "DVH": "gp.devanahalli",
+                "HSK": "gp.hoskote", "NLM": "gp.nelamangala", "ANK": "gp.anekal"}
+# state, district — villages not listed here are the original Telangana-style samples
+REGION = {"DVH": ("Karnataka", "Bengaluru Rural"), "HSK": ("Karnataka", "Bengaluru Rural"),
+          "NLM": ("Karnataka", "Bengaluru Rural"), "ANK": ("Karnataka", "Bengaluru Urban")}
+COLLECTOR_NAMES = ["Ramesh Kumar", "Sujatha Bandari", "Venkatesh Rao", "Lakshmi Prasanna", "Mahesh Goud", "Anjali Naik",
+                   "Manjunath Gowda", "Shruthi Hegde", "Nagaraj Shetty", "Divya Kumari"]
+FIRST_KA = ["Manjunath", "Shobha", "Nagaraj", "Roopa", "Basavaraj", "Geetha", "Mahadevappa", "Savitha", "Kumar", "Lakshmi",
+            "Venkatesh", "Shantha", "Ramesh", "Vanitha", "Suresh", "Pushpa", "Gangadhar", "Sunanda", "Prakash", "Rekha"]
+LAST_KA = ["Gowda", "Naik", "Shetty", "Hegde", "Reddy", "Kumar", "Murthy", "Patil", "Acharya", "Rao"]
+SEED_VERSION = "2026-11-02-bengaluru-areas"  # bump when the data set changes; the hosted demo then reseeds once
+SEED_VERSION_KEY = "demo_seed_version"
 FIRST = ["Srinivas", "Padma", "Raju", "Kavitha", "Narsimha", "Swapna", "Yadagiri", "Manjula", "Ravi", "Saritha",
          "Bhaskar", "Renuka", "Kishan", "Vijaya", "Anil", "Sunitha", "Mallesh", "Jyothi", "Prakash", "Rekha"]
 LAST = ["Reddy", "Goud", "Rao", "Yadav", "Naik", "Chary", "Mudiraj", "Kumar", "Banoth", "Gaddam"]
@@ -167,7 +192,8 @@ class Seeder:
 
         for code, name, gp_name, lat, lng, collectors, _, _ in VILLAGES:
             gp = self.org(code, gp_name, OrgType.GRAM_PANCHAYAT, f"PL-GP-{code}")
-            v = Village(organization_id=gp.id, name=name, code=code, district="Sample District (synthetic)", state="Telangana",
+            state, district = REGION.get(code, ("Telangana", "Sample District (synthetic)"))
+            v = Village(organization_id=gp.id, name=name, code=code, district=district, state=state,
                         lat=lat, lng=lng, population=self.rng.randint(1800, 4200), is_sample=True,
                         boundary_geojson=self.square(lat, lng))
             self.db.add(v)
@@ -193,10 +219,11 @@ class Seeder:
         for code, _, _, lat, lng, collectors, n_households, n_points in VILLAGES:
             v = self.villages[code]
             hh_list = []
+            first, last = (FIRST_KA, LAST_KA) if code in REGION else (FIRST, LAST)
             for i in range(n_households):
                 hlat, hlng = self.jitter(lat, lng)
                 h = Household(village_id=v.id, household_code=f"{code}-HH-{i + 1:03d}",
-                              head_name=f"{self.rng.choice(FIRST)} {self.rng.choice(LAST)}", phone=None,
+                              head_name=f"{self.rng.choice(first)} {self.rng.choice(last)}", phone=None,
                               address_line=f"Ward {self.rng.randint(1, 8)}, House {self.rng.randint(1, 240)} (synthetic)",
                               lat=hlat, lng=hlng, members_count=self.rng.randint(2, 7), consent_at=self.now, is_sample=True)
                 self.db.add(h)
@@ -353,14 +380,25 @@ class Seeder:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Seed SYNTHETIC demo data")
     parser.add_argument("--reset", action="store_true", help="Delete existing operational data first")
+    parser.add_argument("--if-outdated", action="store_true",
+                        help="Hosted demo: seed an empty database, do nothing when the stored seed version is current, "
+                             "otherwise reset and reseed")
     args = parser.parse_args()
     ensure_safe()
     with SessionLocal() as db:
-        if args.reset:
+        has_users = db.scalar(select(User.id).limit(1)) is not None
+        if args.if_outdated:
+            if has_users and db.scalar(select(SystemSetting.value).where(SystemSetting.key == SEED_VERSION_KEY)) == SEED_VERSION:
+                print(f"Demo data is up to date ({SEED_VERSION}).")
+                return
+            if has_users:
+                reset(db)
+        elif args.reset:
             reset(db)
-        elif db.scalar(select(User.id).limit(1)):
+        elif has_users:
             raise SystemExit("Database already has users. Re-run with --reset to replace them with demo data.")
         summary = Seeder(db).run()
+        db.add(SystemSetting(key=SEED_VERSION_KEY, value=SEED_VERSION, description="Version of the synthetic demo data set"))
         db.commit()
     try:
         from app.iot.mqtt_auth import write_passwd_file_from_db

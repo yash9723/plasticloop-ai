@@ -2,8 +2,8 @@
 
 from sqlalchemy import select
 
-from app.models import User
-from app.scripts.seed_demo import DOMAIN, Seeder
+from app.models import User, Village
+from app.scripts.seed_demo import DEMO_ACCOUNTS, DOMAIN, REGION, VILLAGES, Seeder
 from tests import factories as f
 
 API = "/api/v1"
@@ -11,7 +11,14 @@ API = "/api/v1"
 
 def test_seed_and_full_walkthrough(db, client):
     summary = Seeder(db).run()
-    assert summary["collection_points"] == 40 and summary["devices"] == 4 and summary["transfers"] >= 1
+    assert summary["villages"] == len(VILLAGES)
+    assert summary["collection_points"] == sum(v[7] for v in VILLAGES) and summary["devices"] == 4 and summary["transfers"] >= 1
+    # Bengaluru-area villages exist, are in Karnataka, and every one has a panchayat admin that is listed on the login page.
+    karnataka = {v.code: v for v in db.scalars(select(Village).where(Village.state == "Karnataka"))}
+    assert set(karnataka) == set(REGION) == {"DVH", "HSK", "NLM", "ANK"}
+    listed = {email for email, _, _ in DEMO_ACCOUNTS}
+    for email in (f"gp.devanahalli@{DOMAIN}", f"gp.hoskote@{DOMAIN}", f"gp.nelamangala@{DOMAIN}", f"gp.anekal@{DOMAIN}"):
+        assert email in listed and db.scalar(select(User.id).where(User.email == email)) is not None
     evaluator = db.scalar(select(User).where(User.email == f"evaluator@{DOMAIN}"))
     h = f.headers(evaluator)
     assert client.post(f"{API}/demo/walkthrough/2", headers=h).json()["error"]["code"] == "PREVIOUS_STEP_PENDING"
