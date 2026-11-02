@@ -108,7 +108,7 @@ export function PublicFooter() {
           </ul>
         </div>
       </div>
-      <div className="border-t py-4 text-center text-xs text-muted-foreground">{t("public.footer.sih")}</div>
+      <div className="border-t py-4 text-center text-xs text-muted-foreground">{t("public.footer.area")}</div>
     </footer>
   );
 }

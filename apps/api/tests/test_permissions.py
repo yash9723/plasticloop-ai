@@ -83,3 +83,10 @@ def test_household_pii_redacted_for_evaluator(client, db, two_tenants):
     hh = f.household(db, t["va"])
     data = client.get(f"/api/v1/households/{hh.id}", headers=f.headers(t["evaluator"])).json()["household"]
     assert data["redacted"] is True and data["phone"] is None and data["address_line"] is None and data["lat"] is None
+
+
+def test_profile_language_accepts_kannada_and_rejects_unknown(client, two_tenants):
+    h = f.headers(two_tenants["collector_a"])
+    ok = client.patch("/api/v1/users/me", headers=h, json={"preferred_language": "kn"})
+    assert ok.status_code == 200 and ok.json()["preferred_language"] == "kn"
+    assert client.patch("/api/v1/users/me", headers=h, json={"preferred_language": "xx"}).status_code == 422

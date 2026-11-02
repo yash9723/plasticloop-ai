@@ -51,10 +51,10 @@ from app.services.telemetry import TelemetryIn, ingest, record_calibration
 
 # device_id, village, community-bin index, type, hours since last report, battery at end, calibrated
 DEVICES = [
-    ("DEV-ESP32-001", "VNP", -1, DeviceType.COMBO_NODE, 0, 78, True),
-    ("DEV-ESP32-002", "VNP", -2, DeviceType.FILL_SENSOR, 0, 17, True),
-    ("DEV-ESP32-003", "PCP", -1, DeviceType.WEIGHING_SCALE, 0, 64, False),
-    ("DEV-ESP32-004", "NGT", -1, DeviceType.COMBO_NODE, 3, 41, True),
+    ("DEV-ESP32-001", "DVH", -1, DeviceType.COMBO_NODE, 0, 78, True),
+    ("DEV-ESP32-002", "DVH", -2, DeviceType.FILL_SENSOR, 0, 17, True),
+    ("DEV-ESP32-003", "HSK", -1, DeviceType.WEIGHING_SCALE, 0, 64, False),
+    ("DEV-ESP32-004", "NLM", -1, DeviceType.COMBO_NODE, 3, 41, True),
 ]
 
 
@@ -99,25 +99,19 @@ def facilities_and_partners(seeder) -> None:
     from app.scripts.seed_demo import DOMAIN
 
     db, op = seeder.db, seeder.orgs["operator"]
-    mrf = Facility(organization_id=op.id, name="Cluster MRF, Vanapuram (synthetic)", code="MRF-VNP", facility_type=FacilityType.MRF,
-                   lat=17.9450, lng=78.8700, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("1500"),
+    # Bengaluru-area cluster: one MRF for the north and east towns, block-level PWMUs for the west and south.
+    mrf = Facility(organization_id=op.id, name="Cluster MRF, Devanahalli (synthetic)", code="MRF-DVH", facility_type=FacilityType.MRF,
+                   lat=13.2300, lng=77.7300, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("1500"),
                    storage_locations=["Bay A", "Bay B", "Bale yard"], is_sample=True)
-    pwmu = Facility(organization_id=op.id, name="Block PWMU, Neelagiri (synthetic)", code="PWMU-NGT", facility_type=FacilityType.PWMU,
-                    lat=17.9900, lng=78.9300, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("800"),
-                    storage_locations=["Shed 1", "Shed 2"], is_sample=True)
-    # Bengaluru-area cluster: one MRF for the north/east towns, block-level PWMUs for the west and south.
-    blr_mrf = Facility(organization_id=op.id, name="Cluster MRF, Devanahalli (synthetic)", code="MRF-DVH", facility_type=FacilityType.MRF,
-                       lat=13.2300, lng=77.7300, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("1200"),
-                       storage_locations=["Bay A", "Bay B", "Bale yard"], is_sample=True)
-    blr_pwmu_w = Facility(organization_id=op.id, name="Block PWMU, Nelamangala (synthetic)", code="PWMU-NLM", facility_type=FacilityType.PWMU,
-                          lat=13.1100, lng=77.4100, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("600"),
-                          storage_locations=["Shed 1", "Shed 2"], is_sample=True)
-    blr_pwmu_s = Facility(organization_id=op.id, name="Block PWMU, Anekal (synthetic)", code="PWMU-ANK", facility_type=FacilityType.PWMU,
-                          lat=12.7300, lng=77.7100, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("600"),
-                          storage_locations=["Shed 1", "Shed 2"], is_sample=True)
-    db.add_all([mrf, pwmu, blr_mrf, blr_pwmu_w, blr_pwmu_s])
+    pwmu_w = Facility(organization_id=op.id, name="Block PWMU, Nelamangala (synthetic)", code="PWMU-NLM", facility_type=FacilityType.PWMU,
+                      lat=13.1100, lng=77.4100, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("800"),
+                      storage_locations=["Shed 1", "Shed 2"], is_sample=True)
+    pwmu_s = Facility(organization_id=op.id, name="Block PWMU, Anekal (synthetic)", code="PWMU-ANK", facility_type=FacilityType.PWMU,
+                      lat=12.7300, lng=77.7100, address="Synthetic location for demonstration", capacity_kg_per_day=Decimal("800"),
+                      storage_locations=["Shed 1", "Shed 2"], is_sample=True)
+    db.add_all([mrf, pwmu_w, pwmu_s])
     db.flush()
-    seeder.facilities = {"VNP": mrf, "PCP": mrf, "NGT": pwmu, "DVH": blr_mrf, "HSK": blr_mrf, "NLM": blr_pwmu_w, "ANK": blr_pwmu_s}
+    seeder.facilities = {"DVH": mrf, "HSK": mrf, "DBP": mrf, "NLM": pwmu_w, "BDI": pwmu_w, "ANK": pwmu_s, "SRP": pwmu_s}
     for code, fac in seeder.facilities.items():
         seeder.villages[code].facility_id = fac.id
     seeder.user(f"mrf.operator@{DOMAIN}", "Kiran Kumar (MRF supervisor, demo)", RoleKey.MRF_OPERATOR, op)
@@ -127,13 +121,13 @@ def facilities_and_partners(seeder) -> None:
             organization_id=seeder.orgs["proc1"].id, display_name=seeder.orgs["proc1"].name, is_sample=True,
             supported_category_codes=["rigid_plastic", "flexible_plastic", "suspected_mlp"],
             capabilities="FICTIONAL SAMPLE PARTNER: mechanical recycling of rigid and flexible plastics.",
-            acceptance_criteria="Dry, baled, contamination below 5% (sample criteria).", lat=17.8800, lng=78.9900,
+            acceptance_criteria="Dry, baled, contamination below 5% (sample criteria).", lat=12.8300, lng=77.4400,
             contact_name="Sample contact", documentation_status=DocumentationStatus.NOT_SUBMITTED),
         "proc2": ProcessingPartner(
             organization_id=seeder.orgs["proc2"].id, display_name=seeder.orgs["proc2"].name, is_sample=True,
             supported_category_codes=["suspected_mlp", "nonrecoverable"],
             capabilities="FICTIONAL SAMPLE PARTNER: co-processing of non-recyclable and multilayer plastic.",
-            acceptance_criteria="Shredded, moisture below 10% (sample criteria).", lat=17.8200, lng=78.8600,
+            acceptance_criteria="Shredded, moisture below 10% (sample criteria).", lat=12.9100, lng=77.2600,
             contact_name="Sample contact", documentation_status=DocumentationStatus.SUBMITTED),
     }
     db.add_all(seeder.partners.values())
@@ -142,14 +136,14 @@ def facilities_and_partners(seeder) -> None:
 
 # name, registration, village, type, capacity kg, driver key
 VEHICLES = [
-    ("E-cart VNP-1 (demo)", "DEMO-VNP-01", "VNP", VehicleType.E_CART, 350, "driver.vanapuram"),
-    ("Auto VNP-2 (demo)", "DEMO-VNP-02", "VNP", VehicleType.AUTO_RICKSHAW, 500, None),
-    ("Tractor PCP-1 (demo)", "DEMO-PCP-01", "PCP", VehicleType.TRACTOR_TROLLEY, 1200, "driver.pachchapalli"),
-    ("Mini truck NGT-1 (demo)", "DEMO-NGT-01", "NGT", VehicleType.MINI_TRUCK, 1500, None),
-    ("E-cart DVH-1 (demo)", "DEMO-DVH-01", "DVH", VehicleType.E_CART, 350, None),
-    ("Auto HSK-1 (demo)", "DEMO-HSK-01", "HSK", VehicleType.AUTO_RICKSHAW, 500, None),
+    ("E-cart DVH-1 (demo)", "DEMO-DVH-01", "DVH", VehicleType.E_CART, 350, "driver.devanahalli"),
+    ("Auto DVH-2 (demo)", "DEMO-DVH-02", "DVH", VehicleType.AUTO_RICKSHAW, 500, None),
+    ("Tractor HSK-1 (demo)", "DEMO-HSK-01", "HSK", VehicleType.TRACTOR_TROLLEY, 1200, "driver.hoskote"),
     ("Mini truck NLM-1 (demo)", "DEMO-NLM-01", "NLM", VehicleType.MINI_TRUCK, 1500, None),
     ("E-cart ANK-1 (demo)", "DEMO-ANK-01", "ANK", VehicleType.E_CART, 350, None),
+    ("Auto DBP-1 (demo)", "DEMO-DBP-01", "DBP", VehicleType.AUTO_RICKSHAW, 500, None),
+    ("E-cart SRP-1 (demo)", "DEMO-SRP-01", "SRP", VehicleType.E_CART, 350, None),
+    ("Mini truck BDI-1 (demo)", "DEMO-BDI-01", "BDI", VehicleType.MINI_TRUCK, 1500, None),
 ]
 
 
@@ -164,10 +158,10 @@ def vehicles_and_routes(seeder) -> int:
         db.add(veh)
         seeder.vehicles.setdefault(village, []).append(veh)
     db.flush()
-    scope = AccessScope(user_id=seeder.gp_admin("VNP").id, roles=frozenset(), is_super=True)
+    scope = AccessScope(user_id=seeder.gp_admin("DVH").id, roles=frozenset(), is_super=True)
     n = 0
-    # Today's optimised plan for Vanapuram and yesterday's (completed) plan for Pachchapalli — same planner as the UI.
-    for village, day, finish in (("VNP", now.date(), False), ("PCP", (now - timedelta(days=1)).date(), True)):
+    # Today's optimised plan for Devanahalli and yesterday's (completed) plan for Hoskote — same planner as the UI.
+    for village, day, finish in (("DVH", now.date(), False), ("HSK", (now - timedelta(days=1)).date(), True)):
         result = route_planner.plan_routes(
             db, scope, seeder.gp_admin(village).id, vehicle_ids=[x.id for x in seeder.vehicles[village]], planned_date=day,
             village_ids=[seeder.villages[village].id], facility_id=seeder.facilities[village].id, time_limit_s=1, save=True)
@@ -256,7 +250,7 @@ def _synthetic_evidence_pdf(seeder, title: str):
 def recovery_market_finance(seeder) -> dict:
     db, now = seeder.db, seeder.now
     operator, processor = seeder.users["mrf.operator"], seeder.users["processor"]
-    mrf = seeder.facilities["VNP"]
+    mrf = seeder.facilities["DVH"]
     proc1 = seeder.partners["proc1"]
     proc1.supported_category_codes = ["rigid_plastic", "flexible_plastic", "suspected_mlp", "paper_cardboard"]
     db.flush()

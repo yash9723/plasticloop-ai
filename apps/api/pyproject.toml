@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "plasticloop-api"
 version = "0.1.0"
-description = "PlasticLoop AI backend — rural plastic waste collection, traceability and recovery (SIH26259)"
+description = "PlasticLoop AI backend — plastic waste collection, traceability and recovery for Bengaluru and the towns around it"
 requires-python = ">=3.12"
 # Exact versions are pinned in requirements.lock (generated inside python:3.12-slim).
 dependencies = [

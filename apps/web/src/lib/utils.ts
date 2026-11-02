@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const INTL_LOCALE: Record<string, string> = { en: "en-IN", hi: "hi-IN", te: "te-IN" };
+const INTL_LOCALE: Record<string, string> = { en: "en-IN", kn: "kn-IN", hi: "hi-IN", te: "te-IN" };
 export const intlLocale = (locale: string) => INTL_LOCALE[locale] ?? "en-IN";
 
 export function formatNumber(value: number | null | undefined, locale = "en", digits = 1) {

@@ -14,7 +14,7 @@ from app.core.middleware import RequestContextMiddleware
 log = get_logger("app")
 
 DESCRIPTION = """
-PlasticLoop AI — intelligent rural plastic waste collection, traceability and resource recovery (SIH26259).
+PlasticLoop AI — intelligent plastic waste collection, traceability and resource recovery for Bengaluru and the towns around it.
 
 * All endpoints are versioned under `/api/v1`.
 * Authenticate with `POST /api/v1/auth/login`, then send `Authorization: Bearer <access_token>`.

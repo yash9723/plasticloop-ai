@@ -30,10 +30,11 @@ Click the links under each step to show the real records (route map, batch ledge
 
 ## 3. Field reality (2 min)
 Sign in as **`collector1@…`** on a phone-sized window. Collector app → turn the network off (browser dev tools) → record a
-collection → reload → it is still there → network on → **Sync now**. Open **Offline queue** to show statuses.
+collection → reload → it is still there → network on → **Sync now**. Open **Offline queue** to show statuses. Collectors, drivers and
+households default to Kannada (ಕನ್ನಡ); the language menu switches to English, Hindi or Telugu.
 
 ## 4. Devices (1 min)
-As **`gp.vanapuram@…`**: **Devices → Device simulator** → raise fill to 95 % → **Send reading** → the device page and the bin's
+As **`gp.devanahalli@…`**: **Devices → Device simulator** → raise fill to 95 % → **Send reading** → the device page and the bin's
 fill update live. Mention the real ESP32 firmware and the per-device MQTT ACL.
 
 ## 5. Accountability (1 min)

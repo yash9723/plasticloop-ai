@@ -49,7 +49,7 @@
   --color-chart-5: var(--chart-5);
   --color-chart-6: var(--chart-6);
 
-  --font-sans: "Inter Variable", "Noto Sans Devanagari", "Noto Sans Telugu", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Noto Sans Kannada", "Noto Sans Devanagari", "Noto Sans Telugu", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -69,8 +69,9 @@
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "cv11", "ss01";
   }
-  /* Devanagari/Telugu need extra line height to stay legible on small screens */
+  /* Devanagari/Kannada/Telugu need extra line height to stay legible on small screens */
   :lang(hi) body,
+  :lang(kn) body,
   :lang(te) body {
     line-height: 1.65;
   }

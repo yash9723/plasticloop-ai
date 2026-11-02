@@ -3,7 +3,7 @@
 Legend: ✅ done and verified · 🟡 done with a stated limit · ⬜ not started. "Verified" means exercised by an executed test or a
 recorded manual run (see [TEST_REPORT.md](TEST_REPORT.md)).
 
-_Last updated: 2026-10-09._
+_Last updated: 2026-11-03._
 
 | Phase | Module | Status | Evidence / notes |
 |---|---|---|---|
@@ -11,7 +11,7 @@ _Last updated: 2026-10-09._
 | A | PostgreSQL/PostGIS schema (48 tables), Alembic migrations, append-only triggers, CHECK constraints, optimistic locking | ✅ | `test_db_constraints.py`; migrations run on every API start |
 | A | Auth (Argon2id, short JWT, rotating refresh cookie with reuse detection, CSRF header, invitations, citizen registration, rate limits) | ✅ | `test_auth.py` |
 | A | RBAC + tenant scoping (`AccessScope`, cross-tenant 404) | ✅ | `test_permissions.py`, E2E roles test |
-| A | Frontend shell, UI kit, light/dark, i18n EN/HI/TE (1 236 keys × 3) | 🟡 | tsc/eslint/i18n clean; HI/TE need native-speaker review |
+| A | Frontend shell, UI kit, light/dark, i18n EN/KN/HI/TE (1 236 keys × 4) | 🟡 | tsc/eslint/i18n clean; KN/HI/TE are machine-drafted and need native-speaker review |
 | B | Villages, households (PII minimisation, erasure), QR collection points (PostGIS), pickup requests, complaints | ✅ | `test_collections_sync.py`, `test_permissions.py` |
 | B | Collections + idempotent offline sync + conflict resolution | ✅ | `test_collections_sync.py`, E2E offline test (exactly one server row) |
 | B | Offline-first collector PWA (Dexie queue, backoff, service worker caching incl. page assets, icons, manifest) | 🟡 | vitest + E2E; foreground sync only (Background Sync not used) |
@@ -35,7 +35,9 @@ _Last updated: 2026-10-09._
 * OSRM routing server (supported via `OSRM_URL`, not run in this project).
 * SMS / WhatsApp / web-push notifications (in-app only).
 * Background Sync API (the PWA syncs while open: on reconnect, on start, every 30 s and on demand).
-* ESP32 bench test on hardware; native-speaker review of Hindi and Telugu.
+* ESP32 bench test on hardware; native-speaker review of Kannada, Hindi and Telugu.
+* Bengaluru city wards (inside the municipal limits) are not modelled: the demo covers the Gram Panchayats and towns around
+  the city, because the platform's units are panchayats, villages and MRF / PWMU sites.
 
 ## Build notes for this machine
 

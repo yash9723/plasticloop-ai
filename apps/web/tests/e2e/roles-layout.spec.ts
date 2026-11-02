@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { apiToken, login, noHorizontalOverflow } from "./helpers";
 
-const ROLES = ["superadmin", "gp.vanapuram", "collector1", "driver.vanapuram", "mrf.operator", "processor", "household", "evaluator"];
+const ROLES = ["superadmin", "gp.devanahalli", "collector1", "driver.devanahalli", "mrf.operator", "processor", "household", "evaluator"];
 
 test("every demo role can sign in and lands on a working page", async ({ page }) => {
   for (const who of ROLES) {
@@ -28,7 +28,7 @@ for (const width of [360, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     await noHorizontalOverflow(page);
-    await login(page, "gp.vanapuram");
+    await login(page, "gp.devanahalli");
     for (const path of ["/dashboard", "/collection-points", "/collections", "/routes/planner", "/devices", "/analytics", "/demo"]) {
       await page.goto(path);
       await expect(page.locator("main h1").first()).toBeVisible();
@@ -50,7 +50,7 @@ test("no critical or serious axe violations on key pages", async ({ page }) => {
     }
   };
   await scan("login");
-  await login(page, "gp.vanapuram");
+  await login(page, "gp.devanahalli");
   await page.goto("/dashboard");
   await expect(page.locator("main h1").first()).toBeVisible();
   await scan("dashboard");

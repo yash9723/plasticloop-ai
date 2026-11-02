@@ -92,7 +92,7 @@ export function RouteMap({
     () => [...points.map((p) => [p.lat, p.lng] as [number, number]), ...anchors.map((a) => [a.lat, a.lng] as [number, number])],
     [points, anchors],
   );
-  const center: [number, number] = coords[0] ?? [17.95, 78.88];
+  const center: [number, number] = coords[0] ?? [13.0, 77.65];
   return (
     <div style={{ height }} className="overflow-hidden rounded-lg border" role="region" aria-label={ariaLabel}>
       <MapContainer center={center} zoom={13} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>

@@ -13,12 +13,16 @@ def test_seed_and_full_walkthrough(db, client):
     summary = Seeder(db).run()
     assert summary["villages"] == len(VILLAGES)
     assert summary["collection_points"] == sum(v[7] for v in VILLAGES) and summary["devices"] == 4 and summary["transfers"] >= 1
-    # Bengaluru-area villages exist, are in Karnataka, and every one has a panchayat admin that is listed on the login page.
+    # Every demo village is in the Bengaluru area (Karnataka) and has a panchayat admin that is listed on the login page.
     karnataka = {v.code: v for v in db.scalars(select(Village).where(Village.state == "Karnataka"))}
-    assert set(karnataka) == set(REGION) == {"DVH", "HSK", "NLM", "ANK"}
+    assert set(karnataka) == set(REGION) == {v[0] for v in VILLAGES} == {"DVH", "HSK", "NLM", "ANK", "DBP", "SRP", "BDI"}
     listed = {email for email, _, _ in DEMO_ACCOUNTS}
-    for email in (f"gp.devanahalli@{DOMAIN}", f"gp.hoskote@{DOMAIN}", f"gp.nelamangala@{DOMAIN}", f"gp.anekal@{DOMAIN}"):
+    for name in ("devanahalli", "hoskote", "nelamangala", "anekal", "doddaballapur", "sarjapur", "bidadi"):
+        email = f"gp.{name}@{DOMAIN}"
         assert email in listed and db.scalar(select(User.id).where(User.email == email)) is not None
+    # Field staff and households default to Kannada; admins and the platform default to English.
+    assert db.scalar(select(User.preferred_language).where(User.email == f"collector1@{DOMAIN}")) == "kn"
+    assert db.scalar(select(User.preferred_language).where(User.email == f"gp.devanahalli@{DOMAIN}")) == "en"
     evaluator = db.scalar(select(User).where(User.email == f"evaluator@{DOMAIN}"))
     h = f.headers(evaluator)
     assert client.post(f"{API}/demo/walkthrough/2", headers=h).json()["error"]["code"] == "PREVIOUS_STEP_PENDING"

@@ -40,7 +40,8 @@ def q(value) -> Decimal:
 
 
 def new_code(prefix: str) -> str:
-    return f"{prefix}-{utcnow():%y%m%d}-{secrets.token_hex(3).upper()}"
+    # 8 hex characters: with 6 a demo run (about 2,000 same-day batches) collided roughly one run in ten.
+    return f"{prefix}-{utcnow():%y%m%d}-{secrets.token_hex(4).upper()}"
 
 
 def category_by_code(db: Session, code: str) -> MaterialCategory:

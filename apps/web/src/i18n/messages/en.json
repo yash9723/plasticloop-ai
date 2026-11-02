@@ -355,8 +355,8 @@
   },
   "public": {
     "hero": {
-      "eyebrow": "SIH26259 · Multi-layer plastic management at PWMU/MRF level",
-      "title": "Every kilogram of rural plastic, traced from doorstep to verified recovery.",
+      "eyebrow": "Plastic waste in and around Bengaluru · Multi-layer plastic at MRF and PWMU level",
+      "title": "Every kilogram of plastic from Bengaluru and its surrounding towns, traced from doorstep to verified recovery.",
       "subtitle": "PlasticLoop AI connects households, collectors, Gram Panchayats, MRFs and processors on one offline-first platform, with smart scales, route planning and an auditable material ledger.",
       "primaryCta": "Open the platform",
       "secondaryCta": "See how it works"
@@ -402,18 +402,18 @@
       "citizen": "Register a household"
     },
     "footer": {
-      "about": "Intelligent rural plastic waste collection, traceability and resource recovery.",
+      "about": "Intelligent plastic waste collection, traceability and resource recovery for Bengaluru and the towns around it.",
       "honesty": "Demo deployments contain synthetic data only. No real organisations, people or outcomes are represented.",
       "platform": "Platform",
       "access": "Access",
-      "sih": "Smart India Hackathon 2026 · Problem statement SIH26259 · Clean & Green Technology"
+      "area": "Demo areas around Bengaluru, Karnataka: Devanahalli, Hoskote, Nelamangala, Anekal, Doddaballapur, Sarjapur and Bidadi. All data is synthetic."
     },
     "about": {
       "title": "About PlasticLoop AI",
-      "lead": "A software and hardware platform for Gram Panchayats, Plastic Waste Management Units and Material Recovery Facilities, focused on multi-layer plastic (MLP).",
+      "lead": "A software and hardware platform for Gram Panchayats, Plastic Waste Management Units and Material Recovery Facilities in and around Bengaluru, focused on multi-layer plastic (MLP).",
       "problem": {
         "title": "The problem",
-        "body": "Multi-layer packaging such as chips and biscuit wrappers is light, bulky and hard to recycle. In villages it is collected irregularly, weighed rarely, and its fate after leaving the village is usually unknown."
+        "body": "Multi-layer packaging such as chips and biscuit wrappers is light, bulky and hard to recycle. In the villages and fast-growing towns around Bengaluru it is collected irregularly, weighed rarely, and its fate after leaving the area is usually unknown."
       },
       "approach": {
         "title": "Our approach",
@@ -421,7 +421,7 @@
       },
       "scope": {
         "title": "What is in this build",
-        "body": "Collection, offline sync, device telemetry with a simulator, routing, MRF intake and inventory, assisted classification, processor transfers, a material exchange, finance and reports, in English, Hindi and Telugu."
+        "body": "Collection, offline sync, device telemetry with a simulator, routing, MRF intake and inventory, assisted classification, processor transfers, a material exchange, finance and reports, in English, Kannada, Hindi and Telugu."
       },
       "limits": {
         "title": "Known limits",
@@ -788,7 +788,7 @@
       "offline": "Offline collection with duplicate-free sync",
       "qr": "Camera QR scanning with manual fallback",
       "households": "Household portal, pickup requests and complaints",
-      "i18n": "English, Hindi and Telugu",
+      "i18n": "English, Kannada, Hindi and Telugu",
       "devices": "ESP32 devices, telemetry and simulator",
       "routing": "Route optimisation with baseline comparison",
       "mrf": "MRF intake, batches and mass balance",
@@ -1481,7 +1481,7 @@
     "actors": {
       "household": "demo citizen",
       "device": "simulated device",
-      "gp.vanapuram": "panchayat admin",
+      "gp.devanahalli": "panchayat admin",
       "collector1": "collector",
       "mrf.operator": "MRF operator",
       "processor": "processing partner",

@@ -20,6 +20,25 @@ Only commands that were actually executed are listed, with their real results. E
 | Backup / restore round trip | `sh infra/scripts/backup.sh` → delete rows → `restore.sh` | complaints 8 → 0 → **8 restored**; API healthy after restore |
 | Guided demo (12 steps) against the dev database | `POST /api/v1/demo/walkthrough/1..12` as evaluator | all 12 succeeded |
 
+## Re-run after the Kannada and Bengaluru change (2026-11-03)
+
+The table above is the earlier full verification and is **not** claimed for this later commit. Only the following were re-run:
+
+| Suite | Result |
+|---|---|
+| Backend pytest (dev image) | **99 passed** (one test added: Kannada accepted as a profile language, unknown codes rejected) |
+| Seed reliability | 3 consecutive `seed_demo --reset` and 6 runs of the seeding test, all clean after two fixes below |
+| Frontend unit (vitest) | **13 passed** (Kannada key and placeholder parity added) |
+| Translations | OK — 1 236 keys × 4 locales (EN / KN / HI / TE) |
+| tsc, eslint | no errors |
+| Browser check (dev stack) | Kannada login page and dashboard rendered with the Kannada font, no clipped text |
+| **Not re-run** | Playwright E2E, production `next build`, clean-stack bring-up, firmware compile |
+
+Defects found and fixed during this change: batch / intake / transfer codes used 6 random hex characters, so a demo seed
+(about 2 000 same-day batches) collided roughly one run in ten — now 8 characters; and a seed step picked an arbitrary
+batch for a demo loss and could fail with `INSUFFICIENT_STOCK` — now deterministic. The Kannada strings are machine-drafted
+and have not been reviewed by a native speaker.
+
 ## Backend tests by area (98)
 
 | File | Covers |

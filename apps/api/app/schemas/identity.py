@@ -113,7 +113,7 @@ class UserBrief(ORM):
 class MePatch(BaseModel):
     full_name: str | None = Field(default=None, min_length=2, max_length=160)
     phone: str | None = Field(default=None, pattern=PHONE_PATTERN)
-    preferred_language: Literal["en", "hi", "te"] | None = None
+    preferred_language: Literal["en", "kn", "hi", "te"] | None = None
     notification_prefs: dict[str, Any] | None = None
 
 

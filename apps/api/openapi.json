@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "PlasticLoop AI API",
-    "description": "\nPlasticLoop AI — intelligent rural plastic waste collection, traceability and resource recovery (SIH26259).\n\n* All endpoints are versioned under `/api/v1`.\n* Authenticate with `POST /api/v1/auth/login`, then send `Authorization: Bearer <access_token>`.\n* Devices authenticate with `Authorization: Device <device_id>:<device_key>` on `POST /api/v1/devices/telemetry`.\n* Errors always use `{\"error\": {\"code\", \"message\", \"details\", \"request_id\"}}`.\n* Records carry `data_origin` (`live` | `demo_seed` | `simulated`); simulated data is never evidence of real-world outcomes.\n",
+    "description": "\nPlasticLoop AI — intelligent plastic waste collection, traceability and resource recovery for Bengaluru and the towns around it.\n\n* All endpoints are versioned under `/api/v1`.\n* Authenticate with `POST /api/v1/auth/login`, then send `Authorization: Bearer <access_token>`.\n* Devices authenticate with `Authorization: Device <device_id>:<device_key>` on `POST /api/v1/devices/telemetry`.\n* Errors always use `{\"error\": {\"code\", \"message\", \"details\", \"request_id\"}}`.\n* Records carry `data_origin` (`live` | `demo_seed` | `simulated`); simulated data is never evidence of real-world outcomes.\n",
     "version": "0.1.0"
   },
   "paths": {
@@ -14338,6 +14338,7 @@
                 "type": "string",
                 "enum": [
                   "en",
+                  "kn",
                   "hi",
                   "te"
                 ]

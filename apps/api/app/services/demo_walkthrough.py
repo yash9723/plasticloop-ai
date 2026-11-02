@@ -45,7 +45,7 @@ DOMAIN = "plasticloop.example"
 STEPS = [
     ("request_pickup", "household"),
     ("bin_full", "device"),
-    ("plan_route", "gp.vanapuram"),
+    ("plan_route", "gp.devanahalli"),
     ("offline_collection", "collector1"),
     ("facility_intake", "mrf.operator"),
     ("sorting", "mrf.operator"),
@@ -127,7 +127,7 @@ def run_step(db: Session, n: int, requested_by: Principal) -> dict:
     now = utcnow()
     result: dict = {}
     links: list[dict] = []
-    mrf = db.scalar(select(Facility).where(Facility.code == "MRF-VNP"))
+    mrf = db.scalar(select(Facility).where(Facility.code == "MRF-DVH"))
 
     if n == 1:
         p = _principal(db, "household")
@@ -150,7 +150,7 @@ def run_step(db: Session, n: int, requested_by: Principal) -> dict:
         result = {"device": device.device_id, "fill_percent": 92, "quality": str(reading.quality)}
         links = [{"label": "device", "href": f"/devices/{device.id}"}]
     elif n == 3:
-        p = _principal(db, "gp.vanapuram")
+        p = _principal(db, "gp.devanahalli")
         vehicles = [v.id for v in db.scalars(select(Vehicle).where(Vehicle.organization_id.in_(p.scope.org_ids), Vehicle.active.is_(True)))]
         plan = route_planner.plan_routes(db, p.scope, p.id, vehicle_ids=vehicles, planned_date=now.date() + timedelta(days=1),
                                          village_ids=[uuid.UUID(ids["village_id"])], facility_id=mrf.id if mrf else None,

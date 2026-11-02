@@ -93,7 +93,7 @@ equals the sum of its movements, and mass balance reports unexplained difference
   pages and RSC with offline fallback, and the JS/CSS referenced by cached pages is cached too, so the collector app and its
   offline queue run with no network.
 * Leaflet maps (OpenStreetMap tiles; markers and routes still draw without tiles), Recharts charts, light/dark themes,
-  EN / HI / TE.
+  EN / KN / HI / TE.
 
 ## IoT
 

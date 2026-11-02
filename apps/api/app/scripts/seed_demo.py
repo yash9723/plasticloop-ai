@@ -53,71 +53,70 @@ KEEP_TABLES = {"roles", "material_categories", "alembic_version", "spatial_ref_s
 
 DEMO_ACCOUNTS: list[tuple[str, str, str]] = [
     (f"superadmin@{DOMAIN}", "super_admin", "Super Admin"),
-    (f"gp.vanapuram@{DOMAIN}", "gp_admin", "Panchayat admin, Vanapuram"),
-    (f"gp.pachchapalli@{DOMAIN}", "gp_admin", "Panchayat admin, Pachchapalli"),
-    (f"gp.neelagiri@{DOMAIN}", "gp_admin", "Panchayat admin, Neelagiri Thanda"),
-    (f"collector1@{DOMAIN}", "collector", "Collector, Vanapuram"),
-    (f"collector2@{DOMAIN}", "collector", "Collector, Vanapuram"),
-    (f"collector3@{DOMAIN}", "collector", "Collector, Pachchapalli"),
-    (f"collector4@{DOMAIN}", "collector", "Collector, Pachchapalli"),
-    (f"collector5@{DOMAIN}", "collector", "Collector, Neelagiri Thanda"),
-    (f"collector6@{DOMAIN}", "collector", "Collector, Neelagiri Thanda"),
     (f"gp.devanahalli@{DOMAIN}", "gp_admin", "Panchayat admin, Devanahalli (Bengaluru North)"),
     (f"gp.hoskote@{DOMAIN}", "gp_admin", "Panchayat admin, Hoskote (Bengaluru East)"),
     (f"gp.nelamangala@{DOMAIN}", "gp_admin", "Panchayat admin, Nelamangala (Bengaluru West)"),
     (f"gp.anekal@{DOMAIN}", "gp_admin", "Panchayat admin, Anekal (Bengaluru South)"),
-    (f"collector7@{DOMAIN}", "collector", "Collector, Devanahalli"),
-    (f"collector8@{DOMAIN}", "collector", "Collector, Hoskote"),
-    (f"collector9@{DOMAIN}", "collector", "Collector, Nelamangala"),
-    (f"collector10@{DOMAIN}", "collector", "Collector, Anekal"),
-    (f"driver.vanapuram@{DOMAIN}", "driver", "Driver, Vanapuram"),
-    (f"driver.pachchapalli@{DOMAIN}", "driver", "Driver, Pachchapalli"),
+    (f"gp.doddaballapur@{DOMAIN}", "gp_admin", "Panchayat admin, Doddaballapur (Bengaluru North-West)"),
+    (f"gp.sarjapur@{DOMAIN}", "gp_admin", "Panchayat admin, Sarjapur (Bengaluru South-East)"),
+    (f"gp.bidadi@{DOMAIN}", "gp_admin", "Panchayat admin, Bidadi (Bengaluru South-West)"),
+    (f"collector1@{DOMAIN}", "collector", "Collector, Devanahalli"),
+    (f"collector2@{DOMAIN}", "collector", "Collector, Devanahalli"),
+    (f"collector3@{DOMAIN}", "collector", "Collector, Hoskote"),
+    (f"collector4@{DOMAIN}", "collector", "Collector, Hoskote"),
+    (f"collector5@{DOMAIN}", "collector", "Collector, Nelamangala"),
+    (f"collector6@{DOMAIN}", "collector", "Collector, Nelamangala"),
+    (f"collector7@{DOMAIN}", "collector", "Collector, Anekal"),
+    (f"collector8@{DOMAIN}", "collector", "Collector, Doddaballapur"),
+    (f"collector9@{DOMAIN}", "collector", "Collector, Sarjapur"),
+    (f"collector10@{DOMAIN}", "collector", "Collector, Bidadi"),
+    (f"driver.devanahalli@{DOMAIN}", "driver", "Driver, Devanahalli"),
+    (f"driver.hoskote@{DOMAIN}", "driver", "Driver, Hoskote"),
     (f"mrf.operator@{DOMAIN}", "mrf_operator", "MRF / PWMU operator"),
     (f"processor@{DOMAIN}", "processor", "Processing partner (fictional)"),
     (f"household@{DOMAIN}", "household", "Household / citizen"),
     (f"evaluator@{DOMAIN}", "evaluator", "Read-only evaluator"),
 ]
 
+# Bengaluru and the peri-urban towns around it. Place names and coordinates are real geography (town centres, approximate);
+# the panchayats, people, households and every figure are fictional.
 # code, name, panchayat, lat, lng, collector numbers, households, points
 VILLAGES = [
-    ("VNP", "Vanapuram (synthetic)", "Vanapuram Gram Panchayat (synthetic)", 17.9620, 78.8410, (1, 2), 20, 16),
-    ("PCP", "Pachchapalli (synthetic)", "Pachchapalli Gram Panchayat (synthetic)", 17.9135, 78.9020, (3, 4), 18, 14),
-    ("NGT", "Neelagiri Thanda (synthetic)", "Neelagiri Thanda Gram Panchayat (synthetic)", 17.9980, 78.9105, (5, 6), 12, 10),
-    # Bengaluru and surrounding peri-urban towns. Place names and coordinates are real geography (town centres, approximate);
-    # the panchayats, people, households and all figures are fictional.
-    ("DVH", "Devanahalli (synthetic)", "Devanahalli Gram Panchayat (synthetic)", 13.2487, 77.7134, (7,), 10, 8),
-    ("HSK", "Hoskote (synthetic)", "Hoskote Gram Panchayat (synthetic)", 13.0707, 77.7982, (8,), 10, 8),
-    ("NLM", "Nelamangala (synthetic)", "Nelamangala Gram Panchayat (synthetic)", 13.0997, 77.3935, (9,), 10, 8),
-    ("ANK", "Anekal (synthetic)", "Anekal Gram Panchayat (synthetic)", 12.7107, 77.6942, (10,), 10, 8),
+    ("DVH", "Devanahalli (synthetic)", "Devanahalli Gram Panchayat (synthetic)", 13.2487, 77.7134, (1, 2), 20, 16),
+    ("HSK", "Hoskote (synthetic)", "Hoskote Gram Panchayat (synthetic)", 13.0707, 77.7982, (3, 4), 18, 14),
+    ("NLM", "Nelamangala (synthetic)", "Nelamangala Gram Panchayat (synthetic)", 13.0997, 77.3935, (5, 6), 12, 10),
+    ("ANK", "Anekal (synthetic)", "Anekal Gram Panchayat (synthetic)", 12.7107, 77.6942, (7,), 10, 8),
+    ("DBP", "Doddaballapur (synthetic)", "Doddaballapur Gram Panchayat (synthetic)", 13.2957, 77.5377, (8,), 10, 8),
+    ("SRP", "Sarjapur (synthetic)", "Sarjapur Gram Panchayat (synthetic)", 12.8603, 77.7867, (9,), 10, 8),
+    ("BDI", "Bidadi (synthetic)", "Bidadi Gram Panchayat (synthetic)", 12.7978, 77.3877, (10,), 10, 8),
 ]
-GP_ADMIN_KEY = {"VNP": "gp.vanapuram", "PCP": "gp.pachchapalli", "NGT": "gp.neelagiri", "DVH": "gp.devanahalli",
-                "HSK": "gp.hoskote", "NLM": "gp.nelamangala", "ANK": "gp.anekal"}
-# state, district — villages not listed here are the original Telangana-style samples
+GP_ADMIN_KEY = {"DVH": "gp.devanahalli", "HSK": "gp.hoskote", "NLM": "gp.nelamangala", "ANK": "gp.anekal",
+                "DBP": "gp.doddaballapur", "SRP": "gp.sarjapur", "BDI": "gp.bidadi"}
+# state, district
 REGION = {"DVH": ("Karnataka", "Bengaluru Rural"), "HSK": ("Karnataka", "Bengaluru Rural"),
-          "NLM": ("Karnataka", "Bengaluru Rural"), "ANK": ("Karnataka", "Bengaluru Urban")}
-COLLECTOR_NAMES = ["Ramesh Kumar", "Sujatha Bandari", "Venkatesh Rao", "Lakshmi Prasanna", "Mahesh Goud", "Anjali Naik",
-                   "Manjunath Gowda", "Shruthi Hegde", "Nagaraj Shetty", "Divya Kumari"]
-FIRST_KA = ["Manjunath", "Shobha", "Nagaraj", "Roopa", "Basavaraj", "Geetha", "Mahadevappa", "Savitha", "Kumar", "Lakshmi",
-            "Venkatesh", "Shantha", "Ramesh", "Vanitha", "Suresh", "Pushpa", "Gangadhar", "Sunanda", "Prakash", "Rekha"]
-LAST_KA = ["Gowda", "Naik", "Shetty", "Hegde", "Reddy", "Kumar", "Murthy", "Patil", "Acharya", "Rao"]
-SEED_VERSION = "2026-11-02-bengaluru-areas"  # bump when the data set changes; the hosted demo then reseeds once
+          "NLM": ("Karnataka", "Bengaluru Rural"), "DBP": ("Karnataka", "Bengaluru Rural"),
+          "ANK": ("Karnataka", "Bengaluru Urban"), "SRP": ("Karnataka", "Bengaluru Urban"),
+          "BDI": ("Karnataka", "Ramanagara")}
+COLLECTOR_NAMES = ["Manjunath Gowda", "Shruthi Hegde", "Nagaraj Shetty", "Divya Kumari", "Basavaraj Patil", "Roopa Naik",
+                   "Mahesh Murthy", "Savitha Acharya", "Kiran Rao", "Anitha Reddy"]
+FIRST = ["Manjunath", "Shobha", "Nagaraj", "Roopa", "Basavaraj", "Geetha", "Mahadevappa", "Savitha", "Kumar", "Lakshmi",
+         "Venkatesh", "Shantha", "Ramesh", "Vanitha", "Suresh", "Pushpa", "Gangadhar", "Sunanda", "Prakash", "Rekha"]
+LAST = ["Gowda", "Naik", "Shetty", "Hegde", "Reddy", "Kumar", "Murthy", "Patil", "Acharya", "Rao"]
+SEED_VERSION = "2026-11-03-bengaluru-first"  # bump when the data set changes; the hosted demo then reseeds once
 SEED_VERSION_KEY = "demo_seed_version"
-FIRST = ["Srinivas", "Padma", "Raju", "Kavitha", "Narsimha", "Swapna", "Yadagiri", "Manjula", "Ravi", "Saritha",
-         "Bhaskar", "Renuka", "Kishan", "Vijaya", "Anil", "Sunitha", "Mallesh", "Jyothi", "Prakash", "Rekha"]
-LAST = ["Reddy", "Goud", "Rao", "Yadav", "Naik", "Chary", "Mudiraj", "Kumar", "Banoth", "Gaddam"]
 INSTITUTIONS = ["Govt. High School", "Weekly Market", "Anganwadi Centre", "Panchayat Office", "Primary Health Sub-centre"]
 
-# code, label, hi, te, colour, description, rules, typical weight range per pickup (kg)
+# code, label, kn, hi, te, colour, description, rules, typical weight range per pickup (kg)
 STREAMS = [
-    ("clean_rigid_plastic", "Clean rigid plastic", "साफ़ कठोर प्लास्टिक", "శుభ్రమైన గట్టి ప్లాస్టిక్", "#166534",
+    ("clean_rigid_plastic", "Clean rigid plastic", "ಸ್ವಚ್ಛ ಗಟ್ಟಿ ಪ್ಲಾಸ್ಟಿಕ್", "साफ़ कठोर प्लास्टिक", "శుభ్రమైన గట్టి ప్లాస్టిక్", "#166534",
      "Bottles, containers, buckets and other hard plastic items, rinsed and dry.",
      ["Rinse and dry", "Remove food residue", "Caps can stay on"], (0.6, 4.0)),
-    ("soft_plastic_packets", "Soft plastic & packets", "नरम प्लास्टिक और पैकेट", "మెత్తని ప్లాస్టిక్ & ప్యాకెట్లు", "#0d9488",
+    ("soft_plastic_packets", "Soft plastic & packets", "ಮೃದು ಪ್ಲಾಸ್ಟಿಕ್ ಮತ್ತು ಪ್ಯಾಕೆಟ್‌ಗಳು", "नरम प्लास्टिक और पैकेट", "మెత్తని ప్లాస్టిక్ & ప్యాకెట్లు", "#0d9488",
      "Carry bags, wrappers, chips/biscuit/milk packets. Shiny foil-lined packets are likely multi-layer (MLP).",
      ["Shake out food", "Keep dry", "Do not burn"], (0.3, 3.0)),
-    ("paper_metal_glass", "Paper, metal & glass", "कागज़, धातु और काँच", "కాగితం, లోహం & గాజు", "#64748b",
+    ("paper_metal_glass", "Paper, metal & glass", "ಕಾಗದ, ಲೋಹ ಮತ್ತು ಗಾಜು", "कागज़, धातु और काँच", "కాగితం, లోహం & గాజు", "#64748b",
      "Cardboard, newspaper, tins and glass bottles.", ["Flatten cartons", "Keep glass separate and intact"], (0.5, 5.0)),
-    ("mixed_rejects", "Mixed / soiled rejects", "मिश्रित / गंदा कचरा", "కలగలిసిన / మురికి వ్యర్థాలు", "#b45309",
+    ("mixed_rejects", "Mixed / soiled rejects", "ಮಿಶ್ರ / ಕೊಳಕು ತ್ಯಾಜ್ಯ", "मिश्रित / गंदा कचरा", "కలగలిసిన / మురికి వ్యర్థాలు", "#b45309",
      "Soiled or mixed material that cannot be separated at source.", ["Keep away from wet waste"], (0.2, 2.0)),
 ]
 
@@ -161,8 +160,9 @@ class Seeder:
         self.orgs[key] = o
         return o
 
-    def user(self, email: str, name: str, role: str, org: Organization, village: Village | None = None, facility_id=None) -> User:
-        u = User(email=email, full_name=name, password_hash=self.pw, is_sample=True, preferred_language="en")
+    def user(self, email: str, name: str, role: str, org: Organization, village: Village | None = None, facility_id=None,
+             lang: str = "en") -> User:
+        u = User(email=email, full_name=name, password_hash=self.pw, is_sample=True, preferred_language=lang)
         self.db.add(u)
         self.db.flush()
         self.db.add(UserMembership(user_id=u.id, organization_id=org.id, role_key=role,
@@ -184,15 +184,15 @@ class Seeder:
         platform = self.org("platform", "PlasticLoop Demo Platform (synthetic)", OrgType.PLATFORM, "PL-PLATFORM")
         self.org("operator", "Cluster Waste Services Cooperative (synthetic)", OrgType.MRF_OPERATOR, "PL-MRF-COOP")
         self.org("proc1", "GreenLoop Polymers (fictional sample)", OrgType.PROCESSOR, "PL-PROC-GREENLOOP")
-        self.org("proc2", "Deccan Co-processing Partners (fictional sample)", OrgType.PROCESSOR, "PL-PROC-DECCAN")
+        self.org("proc2", "Southern Co-processing Partners (fictional sample)", OrgType.PROCESSOR, "PL-PROC-SOUTH")
         self.org("buyer1", "Sample Recycled Materials Buyer A (fictional)", OrgType.BUYER, "PL-BUY-A")
         self.org("buyer2", "Sample Packaging Converter B (fictional)", OrgType.BUYER, "PL-BUY-B")
         self.user(f"superadmin@{DOMAIN}", "Platform Admin (demo)", RoleKey.SUPER_ADMIN, platform)
-        self.user(f"evaluator@{DOMAIN}", "SIH Evaluator (demo)", RoleKey.EVALUATOR, platform)
+        self.user(f"evaluator@{DOMAIN}", "Evaluator (demo)", RoleKey.EVALUATOR, platform)
 
         for code, name, gp_name, lat, lng, collectors, _, _ in VILLAGES:
             gp = self.org(code, gp_name, OrgType.GRAM_PANCHAYAT, f"PL-GP-{code}")
-            state, district = REGION.get(code, ("Telangana", "Sample District (synthetic)"))
+            state, district = REGION[code]
             v = Village(organization_id=gp.id, name=name, code=code, district=district, state=state,
                         lat=lat, lng=lng, population=self.rng.randint(1800, 4200), is_sample=True,
                         boundary_geojson=self.square(lat, lng))
@@ -202,13 +202,13 @@ class Seeder:
             short = name.split(" (")[0]
             self.user(f"{GP_ADMIN_KEY[code]}@{DOMAIN}", f"Panchayat Secretary, {short} (demo)", RoleKey.GP_ADMIN, gp)
             for idx in collectors:
-                self.user(f"collector{idx}@{DOMAIN}", COLLECTOR_NAMES[idx - 1], RoleKey.COLLECTOR, gp, v)
-        self.user(f"driver.vanapuram@{DOMAIN}", "Shankar Yadav", RoleKey.DRIVER, self.orgs["VNP"])
-        self.user(f"driver.pachchapalli@{DOMAIN}", "Ilaiah Banoth", RoleKey.DRIVER, self.orgs["PCP"])
+                self.user(f"collector{idx}@{DOMAIN}", COLLECTOR_NAMES[idx - 1], RoleKey.COLLECTOR, gp, v, lang="kn")
+        self.user(f"driver.devanahalli@{DOMAIN}", "Shivakumar Gowda", RoleKey.DRIVER, self.orgs["DVH"], lang="kn")
+        self.user(f"driver.hoskote@{DOMAIN}", "Mahadevappa Naik", RoleKey.DRIVER, self.orgs["HSK"], lang="kn")
 
     def waste_streams(self) -> None:
-        for i, (code, label, hi, te, color, desc, rules, _) in enumerate(STREAMS):
-            s = WasteStream(code=code, label=label, labels={"hi": hi, "te": te}, description=desc, color=color,
+        for i, (code, label, kn, hi, te, color, desc, rules, _) in enumerate(STREAMS):
+            s = WasteStream(code=code, label=label, labels={"kn": kn, "hi": hi, "te": te}, description=desc, color=color,
                             rules=rules, sort_order=i, is_demo_config=True)
             self.db.add(s)
             self.streams[code] = s
@@ -219,11 +219,10 @@ class Seeder:
         for code, _, _, lat, lng, collectors, n_households, n_points in VILLAGES:
             v = self.villages[code]
             hh_list = []
-            first, last = (FIRST_KA, LAST_KA) if code in REGION else (FIRST, LAST)
             for i in range(n_households):
                 hlat, hlng = self.jitter(lat, lng)
                 h = Household(village_id=v.id, household_code=f"{code}-HH-{i + 1:03d}",
-                              head_name=f"{self.rng.choice(first)} {self.rng.choice(last)}", phone=None,
+                              head_name=f"{self.rng.choice(FIRST)} {self.rng.choice(LAST)}", phone=None,
                               address_line=f"Ward {self.rng.randint(1, 8)}, House {self.rng.randint(1, 240)} (synthetic)",
                               lat=hlat, lng=hlng, members_count=self.rng.randint(2, 7), consent_at=self.now, is_sample=True)
                 self.db.add(h)
@@ -259,14 +258,14 @@ class Seeder:
             self.db.flush()
             self.points[code] = points
 
-        owner = self.user(f"household@{DOMAIN}", "Padma Reddy (demo citizen)", RoleKey.HOUSEHOLD, self.orgs["VNP"])
-        self.households["VNP"][0].user_id = owner.id
-        self.households["VNP"][0].head_name = "Padma Reddy (demo citizen)"
+        owner = self.user(f"household@{DOMAIN}", "Shobha Gowda (demo citizen)", RoleKey.HOUSEHOLD, self.orgs["DVH"], lang="kn")
+        self.households["DVH"][0].user_id = owner.id
+        self.households["DVH"][0].head_name = "Shobha Gowda (demo citizen)"
         self.db.flush()
 
     def collection_history(self, days: int = 45) -> None:
         weekdays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
-        ranges = {s[0]: s[7] for s in STREAMS}
+        ranges = {s[0]: s[-1] for s in STREAMS}
         events = []
         for points in self.points.values():
             for cp in points:
@@ -305,7 +304,7 @@ class Seeder:
         statuses = ([PickupStatus.SUBMITTED] * 4 + [PickupStatus.ASSIGNED] * 3 + [PickupStatus.IN_PROGRESS]
                     + [PickupStatus.COMPLETED] * 3 + [PickupStatus.CANCELLED])
         for i, status in enumerate(statuses):
-            code = ("VNP", "PCP", "NGT")[i % 3]
+            code = ("DVH", "HSK", "NLM")[i % 3]
             hh = self.households[code][i % 5]
             cp = next((p for p in self.points[code] if p.household_id == hh.id), self.points[code][0])
             requester = self.users["household"] if hh.user_id else self.gp_admin(code)
@@ -331,7 +330,7 @@ class Seeder:
         ]
         done = (ComplaintStatus.RESOLVED, ComplaintStatus.CLOSED)
         for i, (cat, status, desc) in enumerate(specs):
-            code = ("VNP", "PCP", "NGT")[i % 3]
+            code = ("DVH", "HSK", "NLM")[i % 3]
             hh = self.households[code][i]
             self.db.add(Complaint(
                 village_id=self.villages[code].id, household_id=hh.id,

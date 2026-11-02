@@ -26,11 +26,11 @@ Evidence names refer to [TEST_REPORT.md](TEST_REPORT.md).
 | Analytics | Overview KPIs, funnel, by village/collector, device quality, routes vs baseline, stock ageing | browser, demo step 12 | ✅ |
 | Notifications | In-app, dedupe/cooldown, muting; fill, battery, offline, anomalies, pickups, routes, transfers, ageing | device & recovery tests, worker logs | 🟡 in-app only (no SMS/WhatsApp/push) |
 | Live updates | Postgres NOTIFY → SSE → query invalidation | manual (browser) | ✅ |
-| Multilingual EN / HI / TE | Custom i18n, CI parity check, language persisted | i18n check, vitest parity test | 🟡 HI/TE need native review |
+| Multilingual EN / KN / HI / TE | Custom i18n, CI parity check, language persisted, Kannada default for field staff and households | i18n check, vitest parity test | 🟡 KN/HI/TE need native review |
 | Accessibility & responsive | Semantic structure, labels, contrast fixes, no overflow 360–1440 px | E2E axe + overflow tests | 🟡 screen readers not tested |
 | Database design | 48 tables, constraints, triggers, PostGIS, migrations | `test_db_constraints.py`, `alembic upgrade` on clean DB | ✅ |
 | API design | Versioned REST, uniform errors, pagination, OpenAPI (161 operations) | [API_REFERENCE.md](API_REFERENCE.md) | ✅ |
-| Demo data & hackathon mode | Deterministic synthetic seed via real services; demo banner; 12-step guided demo; demo disabled in production | `test_demo_walkthrough.py` | ✅ |
+| Demo data & demo mode (seven Bengaluru-area villages) | Deterministic synthetic seed via real services; demo banner; 12-step guided demo; demo disabled in production | `test_demo_walkthrough.py` | ✅ |
 | Audit trail | Append-only `audit_logs`, audit page | constraints test, browser | ✅ |
 | DevOps | Docker Compose (5 services), healthchecks, backup/restore, E2E script, deployment guide | clean-stack run, backup round trip | 🟡 public TLS deployment not executed |
 | Hardware contract | Topics, payloads, commands, wiring, provisioning, calibration | [ESP32_INTEGRATION.md](ESP32_INTEGRATION.md) | 🟡 bench test pending |

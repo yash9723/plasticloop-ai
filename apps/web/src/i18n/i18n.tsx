@@ -3,13 +3,14 @@
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import en from "./messages/en.json";
 import hi from "./messages/hi.json";
+import kn from "./messages/kn.json";
 import te from "./messages/te.json";
 
-export const LOCALES = ["en", "hi", "te"] as const;
+export const LOCALES = ["en", "kn", "hi", "te"] as const;
 export type Locale = (typeof LOCALES)[number];
-export const LOCALE_NAMES: Record<Locale, string> = { en: "English", hi: "हिन्दी", te: "తెలుగు" };
+export const LOCALE_NAMES: Record<Locale, string> = { en: "English", kn: "ಕನ್ನಡ", hi: "हिन्दी", te: "తెలుగు" };
 
-const MESSAGES: Record<Locale, unknown> = { en, hi, te };
+const MESSAGES: Record<Locale, unknown> = { en, kn, hi, te };
 type Vars = Record<string, string | number>;
 
 export function isLocale(value: unknown): value is Locale {

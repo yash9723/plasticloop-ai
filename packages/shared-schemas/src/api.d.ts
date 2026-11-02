@@ -3929,7 +3929,7 @@ export interface components {
             /** Phone */
             phone?: string | null;
             /** Preferred Language */
-            preferred_language?: ("en" | "hi" | "te") | null;
+            preferred_language?: ("en" | "kn" | "hi" | "te") | null;
             /** Notification Prefs */
             notification_prefs?: {
                 [key: string]: unknown;

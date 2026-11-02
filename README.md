@@ -2,16 +2,18 @@
 
 [![CI](https://github.com/yash9723/plasticloop-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/yash9723/plasticloop-ai/actions/workflows/ci.yml)
 
-**Live demo:** https://plasticloop-web.onrender.com — synthetic data, demo accounts below. Free hosting: the first visit
-after ~15 idle minutes takes about a minute to wake up, and there is no MQTT broker or background worker there
-(see [Deployment](docs/DEPLOYMENT.md#alternative-render-free-tier-public-demo)).
+**Live demo:** https://plasticloop-ai-yash-roop-pynnis-projects.vercel.app — synthetic data, demo accounts below. Free
+hosting: the first visit after ~15 idle minutes takes about a minute to wake up, and there is no MQTT broker or background
+worker there (see [Deployment](docs/DEPLOYMENT.md#alternative-render-free-tier-public-demo)).
 
-Rural plastic-waste collection, traceability and resource recovery for Gram Panchayats and MRF / PWMU operators
-(SIH 2026 problem statement **SIH26259**: management of multilayer plastic (MLP) at PWMU / MRF level).
+Plastic-waste collection, traceability and resource recovery for Bengaluru and the towns around it — Gram Panchayats and
+MRF / PWMU operators, with a focus on multilayer plastic (MLP). The demo covers seven peri-urban areas: Devanahalli,
+Hoskote, Nelamangala, Anekal, Doddaballapur, Sarjapur and Bidadi.
 
 Households → collection points (QR) → collectors (offline-first PWA) → optimised vehicle routes → MRF intake and sorting →
 an append-only batch ledger (suspected vs evidence-verified MLP) → processing partners → evidence-reviewed recycling
-outcomes, with ESP32 smart-bin telemetry, photo-based packaging suggestions, finance, reports and EN / HI / TE UI.
+outcomes, with ESP32 smart-bin telemetry, photo-based packaging suggestions, finance, reports and an English, Kannada,
+Hindi and Telugu UI.
 
 > **Honesty notice.** Everything shipped as demo data is synthetic and labelled as such in the UI, exports and API
 > (`data_origin`). The vision module ships **without a trained model**; its demo heuristic is not a classifier and no accuracy
@@ -45,10 +47,9 @@ mode only; refused when `ENVIRONMENT=production`).
 | Role | Email |
 |---|---|
 | Super admin | `superadmin@plasticloop.example` |
-| Panchayat admin (Telangana-style samples) | `gp.vanapuram@plasticloop.example`, `gp.pachchapalli@…`, `gp.neelagiri@…` |
-| Panchayat admin (Bengaluru area) | `gp.devanahalli@plasticloop.example` (north), `gp.hoskote@…` (east), `gp.nelamangala@…` (west), `gp.anekal@…` (south) |
-| Collector | `collector1@plasticloop.example` … `collector6@…` (Telangana-style), `collector7@…` … `collector10@…` (Devanahalli, Hoskote, Nelamangala, Anekal) |
-| Driver | `driver.vanapuram@plasticloop.example`, `driver.pachchapalli@…` |
+| Panchayat admin | `gp.devanahalli@plasticloop.example` (north), `gp.hoskote@…` (east), `gp.nelamangala@…` (west), `gp.anekal@…` (south), `gp.doddaballapur@…`, `gp.sarjapur@…`, `gp.bidadi@…` |
+| Collector | `collector1@plasticloop.example` … `collector10@…` (Kannada by default) |
+| Driver | `driver.devanahalli@plasticloop.example`, `driver.hoskote@…` (Kannada by default) |
 | MRF / PWMU operator | `mrf.operator@plasticloop.example` |
 | Processing partner (fictional) | `processor@plasticloop.example` |
 | Household | `household@plasticloop.example` |
@@ -99,4 +100,5 @@ docs                architecture, API, ESP32, traceability, tests, demo, deploym
 ## Licence and data
 
 Demo villages, people, organisations and partners are fictional. No real government records, recycling partners or
-regulatory approvals are represented. Hindi and Telugu strings are machine-drafted and need native-speaker review.
+regulatory approvals are represented. Place names and coordinates of the demo areas are real geography; everything else about them
+is made up. Kannada, Hindi and Telugu strings are machine-drafted and need native-speaker review.

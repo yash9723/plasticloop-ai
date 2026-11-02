@@ -6,7 +6,7 @@ import { join } from "node:path";
 
 const root = new URL("..", import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1");
 const msgDir = join(root, "src/i18n/messages");
-const locales = ["en", "hi", "te"];
+const locales = ["en", "kn", "hi", "te"];
 
 const flatten = (obj, prefix = "", out = {}) => {
   for (const [k, v] of Object.entries(obj)) {

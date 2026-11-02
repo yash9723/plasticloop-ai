@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import en from "@/i18n/messages/en.json";
 import hi from "@/i18n/messages/hi.json";
+import kn from "@/i18n/messages/kn.json";
 import te from "@/i18n/messages/te.json";
 import { formatDuration, formatINR, formatKg, formatKm, toQuery } from "@/lib/utils";
 
@@ -32,7 +33,7 @@ describe("formatters", () => {
 
 describe("translations", () => {
   const e = flat(en);
-  it.each([["hi", flat(hi)], ["te", flat(te)]])("%s has exactly the English keys and placeholders", (_, other) => {
+  it.each([["kn", flat(kn)], ["hi", flat(hi)], ["te", flat(te)]])("%s has exactly the English keys and placeholders", (_, other) => {
     expect(Object.keys(other).sort()).toEqual(Object.keys(e).sort());
     for (const [k, v] of Object.entries(e)) {
       const ph = (s: string) => (s.match(/\{\w+\}/g) ?? []).sort();

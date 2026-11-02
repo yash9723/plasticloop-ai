@@ -23,7 +23,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
         <BrandMark className="size-8" />
         <span className="leading-tight">
           <span className="block text-[0.95rem] font-semibold text-white">PlasticLoop AI</span>
-          <span className="block text-[11px] text-sidebar-muted">SIH26259 · MLP traceability</span>
+          <span className="block text-[11px] text-sidebar-muted">Bengaluru · MLP traceability</span>
         </span>
       </Link>
       <nav aria-label={t("nav.menu")} className="flex-1 overflow-y-auto px-3 pb-4">
